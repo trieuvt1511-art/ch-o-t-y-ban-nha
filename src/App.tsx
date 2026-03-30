@@ -14,6 +14,7 @@ import ListeningScreen from "./pages/ListeningScreen";
 import AIChatScreen from "./pages/AIChatScreen";
 import NotFound from "./pages/NotFound";
 import FlashcardScreen from "./pages/FlashcardScreen";
+import SentenceBuilderScreen from "./pages/SentenceBuilderScreen";
 
 const queryClient = new QueryClient();
 
