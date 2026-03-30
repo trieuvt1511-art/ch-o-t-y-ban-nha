@@ -11,31 +11,31 @@ export default function Leaderboard() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center">
-      <div className="w-full max-w-[430px] px-4 pt-6 pb-24">
+      <div className="w-full max-w-[430px] px-5 pt-6 pb-24 page-enter">
         <div className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate('/dashboard')} className="text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft size={22} />
+          <button onClick={() => navigate('/dashboard')} className="btn-icon bg-muted text-muted-foreground hover:text-foreground hover:bg-accent">
+            <ArrowLeft size={20} />
           </button>
-          <h1 className="text-xl font-heading font-bold text-foreground">Thành tích</h1>
+          <h1 className="text-xl font-heading font-bold text-foreground">Gia đình</h1>
         </div>
 
         {profile ? (
           <div className="space-y-4">
-            <div className="rounded-2xl bg-card shadow-card p-5 text-center animate-scale-in">
+            <div className="rounded-2xl bg-card shadow-card p-5 text-center">
               <span className="text-5xl">{profile.emoji}</span>
               <p className="font-heading font-bold text-xl text-foreground mt-2">{profile.name}</p>
               <div className="grid grid-cols-3 gap-3 mt-4">
                 <div>
                   <p className="text-2xl font-heading font-bold text-primary">{profile.words_learned}</p>
-                  <p className="text-xs text-muted-foreground">Từ đã học</p>
+                  <p className="text-[10px] text-muted-foreground font-bold">Từ đã học</p>
                 </div>
                 <div>
                   <p className="text-2xl font-heading font-bold text-secondary">{profile.streak}</p>
-                  <p className="text-xs text-muted-foreground">Ngày streak</p>
+                  <p className="text-[10px] text-muted-foreground font-bold">Ngày streak</p>
                 </div>
                 <div>
                   <p className="text-2xl font-heading font-bold text-success">{profile.weekly_xp}</p>
-                  <p className="text-xs text-muted-foreground">XP tuần</p>
+                  <p className="text-[10px] text-muted-foreground font-bold">XP tuần</p>
                 </div>
               </div>
             </div>
@@ -43,9 +43,9 @@ export default function Leaderboard() {
             <div className="rounded-2xl bg-card shadow-card p-4">
               <p className="font-heading font-bold text-foreground mb-3">🏆 Huy hiệu</p>
               <div className="flex flex-wrap gap-2">
-                {profile.streak >= 3 && <span className="bg-secondary/15 text-secondary rounded-xl px-3 py-1.5 text-xs font-bold">🔥 Streak 3+</span>}
-                {profile.words_learned >= 10 && <span className="bg-primary/15 text-primary rounded-xl px-3 py-1.5 text-xs font-bold">⭐ 10 từ</span>}
-                {profile.scenarios_completed >= 2 && <span className="bg-success/15 text-success rounded-xl px-3 py-1.5 text-xs font-bold">💬 2 bài</span>}
+                {profile.streak >= 3 && <span className="bg-secondary/15 text-secondary rounded-full px-3 py-1.5 text-xs font-bold">🔥 Streak 3+</span>}
+                {profile.words_learned >= 10 && <span className="bg-primary/15 text-primary rounded-full px-3 py-1.5 text-xs font-bold">⭐ 10 từ</span>}
+                {profile.scenarios_completed >= 2 && <span className="bg-success/15 text-success rounded-full px-3 py-1.5 text-xs font-bold">💬 2 bài</span>}
                 {profile.streak < 3 && profile.words_learned < 10 && profile.scenarios_completed < 2 && (
                   <p className="text-sm text-muted-foreground">Học thêm để mở khóa huy hiệu! 🎯</p>
                 )}

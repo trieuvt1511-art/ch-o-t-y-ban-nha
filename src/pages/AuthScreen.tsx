@@ -54,11 +54,11 @@ export default function AuthScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center px-4 py-6">
-      <div className="w-full max-w-[430px]">
+    <div className="min-h-screen bg-background flex flex-col items-center px-5 py-6">
+      <div className="w-full max-w-[430px] page-enter">
         {/* Hero */}
-        <div className="text-center mb-6 animate-fade-in">
-          <img src={heroFamily} alt="HolaMind" className="w-40 h-auto mx-auto mb-3 animate-float" width={800} height={600} />
+        <div className="text-center mb-6">
+          <img src={heroFamily} alt="HolaMind" className="w-36 h-auto mx-auto mb-3 animate-float" width={800} height={600} />
           <h1 className="text-3xl font-heading font-bold text-foreground">
             Hola<span className="text-primary">Mind</span> 🇪🇸
           </h1>
@@ -66,12 +66,12 @@ export default function AuthScreen() {
         </div>
 
         {/* Tabs */}
-        <div className="flex bg-muted rounded-xl p-1 mb-6">
+        <div className="flex bg-muted rounded-full p-1 mb-6">
           {(['login', 'signup'] as const).map(m => (
             <button
               key={m}
               onClick={() => setMode(m)}
-              className={`flex-1 rounded-lg py-2.5 text-sm font-bold transition-all ${mode === m ? 'bg-card text-foreground shadow-card' : 'text-muted-foreground'}`}
+              className={`flex-1 rounded-full min-h-[44px] text-sm font-bold transition-all ${mode === m ? 'bg-card text-foreground shadow-card' : 'text-muted-foreground'}`}
             >
               {m === 'login' ? 'Đăng nhập' : 'Đăng ký'}
             </button>
@@ -79,33 +79,33 @@ export default function AuthScreen() {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4 animate-slide-up">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {mode === 'signup' && (
             <div className="relative">
-              <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder="Tên của bạn"
-                className="w-full rounded-xl border border-input bg-card pl-10 pr-4 py-3 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full rounded-2xl border border-input bg-card pl-11 pr-4 min-h-[48px] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ring"
               />
             </div>
           )}
 
           <div className="relative">
-            <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="Email"
               required
-              className="w-full rounded-xl border border-input bg-card pl-10 pr-4 py-3 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full rounded-2xl border border-input bg-card pl-11 pr-4 min-h-[48px] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ring"
             />
           </div>
 
           <div className="relative">
-            <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input
               type={showPassword ? 'text' : 'password'}
               value={password}
@@ -113,9 +113,9 @@ export default function AuthScreen() {
               placeholder="Mật khẩu (tối thiểu 6 ký tự)"
               required
               minLength={6}
-              className="w-full rounded-xl border border-input bg-card pl-10 pr-10 py-3 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full rounded-2xl border border-input bg-card pl-11 pr-11 min-h-[48px] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ring"
             />
-            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
@@ -123,7 +123,7 @@ export default function AuthScreen() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full gradient-primary text-primary-foreground rounded-xl py-3.5 font-bold shadow-card hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full btn-primary disabled:opacity-50"
           >
             {loading ? (
               <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />

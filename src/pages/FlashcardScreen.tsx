@@ -35,10 +35,10 @@ export default function FlashcardScreen() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center">
-      <div className="w-full max-w-[430px] px-4 pt-6 pb-24">
+      <div className="w-full max-w-[430px] px-5 pt-6 pb-24 page-enter">
         <div className="flex items-center gap-3 mb-4">
-          <button onClick={() => navigate('/dashboard')} className="text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft size={22} />
+          <button onClick={() => navigate('/dashboard')} className="btn-icon bg-muted text-muted-foreground hover:text-foreground hover:bg-accent">
+            <ArrowLeft size={20} />
           </button>
           <h1 className="text-xl font-heading font-bold text-foreground">Flashcard 3000 từ</h1>
         </div>
@@ -46,21 +46,21 @@ export default function FlashcardScreen() {
         <div className="flex gap-2 overflow-x-auto pb-3 mb-3 scrollbar-hide">
           {FLASHCARD_CATEGORIES.map((cat, i) => (
             <button key={cat.name} onClick={() => { setSelectedCat(i); setCurrentIndex(0); setFlipped(false); }}
-              className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${selectedCat === i ? 'gradient-primary text-primary-foreground shadow-card' : 'bg-muted text-muted-foreground'}`}>
+              className={`shrink-0 px-4 min-h-[36px] rounded-full text-xs font-bold transition-all ${selectedCat === i ? 'gradient-primary text-primary-foreground shadow-card' : 'bg-muted text-muted-foreground'}`}>
               {cat.emoji} {cat.name}
             </button>
           ))}
         </div>
 
         <div className="relative mb-4">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input value={search} onChange={e => { setSearch(e.target.value); setCurrentIndex(0); }}
-            placeholder="Tìm từ vựng..." className="w-full rounded-xl border border-input bg-card pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
+            placeholder="Tìm từ vựng..." className="w-full rounded-2xl border border-input bg-card pl-10 pr-4 min-h-[48px] text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
         </div>
 
         <div className="flex justify-between text-xs text-muted-foreground mb-2 px-1">
           <span>{category.emoji} {category.name}</span>
-          <span>{currentIndex + 1} / {words.length}</span>
+          <span className="font-bold">{currentIndex + 1} / {words.length}</span>
         </div>
         <div className="h-1.5 bg-muted rounded-full overflow-hidden mb-5">
           <div className="h-full gradient-primary rounded-full transition-all duration-300" style={{ width: `${((currentIndex + 1) / words.length) * 100}%` }} />
@@ -87,11 +87,11 @@ export default function FlashcardScreen() {
         )}
 
         <div className="flex items-center justify-center gap-4">
-          <button onClick={handlePrev} className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center text-muted-foreground hover:bg-accent transition-colors font-bold">←</button>
-          <button onClick={() => currentWord && speak(currentWord.spanish)} className="w-12 h-12 rounded-xl gradient-secondary flex items-center justify-center text-secondary-foreground shadow-card">
+          <button onClick={handlePrev} className="btn-icon bg-muted text-muted-foreground hover:bg-accent font-bold text-lg">←</button>
+          <button onClick={() => currentWord && speak(currentWord.spanish)} className="btn-icon gradient-secondary text-secondary-foreground shadow-card">
             <Volume2 size={20} />
           </button>
-          <button onClick={handleNext} className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center text-primary-foreground shadow-card font-bold">→</button>
+          <button onClick={handleNext} className="btn-icon gradient-primary text-primary-foreground shadow-card font-bold text-lg">→</button>
         </div>
       </div>
       <BottomNav />

@@ -84,7 +84,6 @@ export default function AIChatScreen() {
     }
   };
 
-  // Speech recognition
   const toggleListening = useCallback(() => {
     if (isListening) {
       recognitionRef.current?.stop();
@@ -125,29 +124,28 @@ export default function AIChatScreen() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center">
-      <div className="w-full max-w-[390px] flex flex-col h-screen">
+      <div className="w-full max-w-[430px] flex flex-col h-screen">
         {/* Header */}
-        <div className="px-4 pt-6 pb-3 flex items-center gap-3">
-          <button onClick={() => navigate('/dashboard')} className="text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft size={22} />
+        <div className="px-5 pt-6 pb-3 flex items-center gap-3">
+          <button onClick={() => navigate('/dashboard')} className="btn-icon bg-muted text-muted-foreground hover:text-foreground hover:bg-accent">
+            <ArrowLeft size={20} />
           </button>
           <div>
-            <h1 className="text-lg font-bold text-foreground">Luyện nói với AI 🤖</h1>
+            <h1 className="text-lg font-heading font-bold text-foreground">Luyện nói với AI 🤖</h1>
             <p className="text-xs text-muted-foreground">Thực hành hội thoại tiếng Tây Ban Nha</p>
           </div>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto px-4 pb-4">
+        <div className="flex-1 overflow-y-auto px-5 pb-4">
           {!selectedScenario ? (
-            <div className="space-y-3 pt-4">
+            <div className="space-y-3 pt-4 page-enter">
               <p className="text-sm text-muted-foreground text-center mb-4">Chọn tình huống để bắt đầu:</p>
               {SCENARIOS_PROMPTS.map((s, i) => (
                 <button
                   key={i}
                   onClick={() => startScenario(s.prompt)}
-                  className="w-full rounded-lg bg-card shadow-card p-4 text-left font-semibold text-foreground hover:scale-[1.01] active:scale-[0.99] transition-all animate-scale-in"
-                  style={{ animationDelay: `${i * 0.08}s` }}
+                  className="w-full rounded-2xl bg-card shadow-card p-4 text-left font-bold text-foreground card-hover min-h-[48px] flex items-center"
                 >
                   {s.label}
                 </button>
@@ -156,12 +154,12 @@ export default function AIChatScreen() {
           ) : (
             <div className="space-y-3 pt-2">
               {messages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-scale-in`}>
+                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`flex items-start gap-2 max-w-[85%] ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                    <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${msg.role === 'user' ? 'bg-primary' : 'bg-secondary'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === 'user' ? 'bg-primary' : 'bg-secondary'}`}>
                       {msg.role === 'user' ? <User size={14} className="text-primary-foreground" /> : <Bot size={14} className="text-secondary-foreground" />}
                     </div>
-                    <div className={`rounded-lg p-3 ${msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-card shadow-card text-foreground'}`}>
+                    <div className={`rounded-2xl p-3 ${msg.role === 'user' ? 'gradient-primary text-primary-foreground' : 'bg-card shadow-card text-foreground'}`}>
                       <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                     </div>
                   </div>
@@ -169,7 +167,7 @@ export default function AIChatScreen() {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-card shadow-card rounded-lg p-3 flex items-center gap-2">
+                  <div className="bg-card shadow-card rounded-2xl p-3 flex items-center gap-2">
                     <Loader2 size={16} className="animate-spin text-muted-foreground" />
                     <span className="text-sm text-muted-foreground">Đang suy nghĩ...</span>
                   </div>
@@ -182,11 +180,11 @@ export default function AIChatScreen() {
 
         {/* Input */}
         {selectedScenario && (
-          <div className="px-4 pb-4 pt-2 border-t border-border bg-background">
+          <div className="px-5 pb-4 pt-2 border-t border-border bg-background">
             <div className="flex gap-2">
               <button
                 onClick={toggleListening}
-                className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-all ${isListening ? 'bg-destructive text-destructive-foreground animate-pulse' : 'bg-muted text-muted-foreground hover:text-foreground'}`}
+                className={`btn-icon shrink-0 ${isListening ? 'bg-destructive text-destructive-foreground animate-pulse' : 'bg-muted text-muted-foreground hover:text-foreground'}`}
               >
                 {isListening ? <MicOff size={18} /> : <Mic size={18} />}
               </button>
@@ -195,18 +193,18 @@ export default function AIChatScreen() {
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && sendMessage()}
                 placeholder={isListening ? 'Đang nghe...' : 'Nhập tiếng TBN hoặc VN...'}
-                className="flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="flex-1 rounded-2xl border border-input bg-background px-4 min-h-[48px] text-sm focus:outline-none focus:ring-2 focus:ring-ring"
               />
               <button
                 onClick={sendMessage}
                 disabled={!input.trim() || isLoading}
-                className="w-10 h-10 rounded-lg bg-primary text-primary-foreground flex items-center justify-center shrink-0 hover:opacity-90 transition-opacity disabled:opacity-40"
+                className="btn-icon gradient-primary text-primary-foreground shadow-card shrink-0 disabled:opacity-40"
               >
                 <Send size={18} />
               </button>
             </div>
-            <p className="text-xs text-muted-foreground text-center mt-2">
-              🎤 Nhấn mic để nói tiếng Tây Ban Nha · Trình duyệt sẽ nhận diện giọng nói
+            <p className="text-[10px] text-muted-foreground text-center mt-2">
+              🎤 Nhấn mic để nói tiếng Tây Ban Nha
             </p>
           </div>
         )}
