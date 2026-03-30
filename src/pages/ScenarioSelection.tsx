@@ -19,19 +19,19 @@ export default function ScenarioSelection() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center">
-      <div className="w-full max-w-[390px] px-4 pt-6 pb-24">
+      <div className="w-full max-w-[430px] px-5 pt-6 pb-24 page-enter">
         <div className="flex items-center gap-3 mb-5">
-          <button onClick={() => navigate('/dashboard')} className="text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft size={22} />
+          <button onClick={() => navigate('/dashboard')} className="btn-icon bg-muted text-muted-foreground hover:text-foreground hover:bg-accent">
+            <ArrowLeft size={20} />
           </button>
-          <h1 className="text-xl font-bold text-foreground">Chọn chủ đề</h1>
+          <h1 className="text-xl font-heading font-bold text-foreground">Chọn chủ đề</h1>
         </div>
 
         {/* Category Filter */}
         <div className="flex gap-2 overflow-x-auto pb-3 mb-4 scrollbar-hide">
           <button
             onClick={() => setFilter('all')}
-            className={`shrink-0 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${filter === 'all' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}
+            className={`shrink-0 px-4 min-h-[36px] rounded-full text-xs font-bold transition-all ${filter === 'all' ? 'gradient-primary text-primary-foreground shadow-card' : 'bg-muted text-muted-foreground'}`}
           >
             Tất cả
           </button>
@@ -39,7 +39,7 @@ export default function ScenarioSelection() {
             <button
               key={c.name}
               onClick={() => setFilter(c.name)}
-              className={`shrink-0 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${filter === c.name ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}
+              className={`shrink-0 px-4 min-h-[36px] rounded-full text-xs font-bold transition-all ${filter === c.name ? 'gradient-primary text-primary-foreground shadow-card' : 'bg-muted text-muted-foreground'}`}
             >
               {c.emoji} {c.name}
             </button>
@@ -55,15 +55,14 @@ export default function ScenarioSelection() {
                 key={scenario.id}
                 onClick={() => hasContent && navigate(`/lesson/${scenario.id}`)}
                 disabled={!hasContent}
-                className={`w-full rounded-lg bg-card shadow-card p-4 text-left transition-all animate-scale-in ${hasContent ? 'hover:scale-[1.01] active:scale-[0.99]' : 'opacity-50'}`}
-                style={{ animationDelay: `${i * 0.03}s` }}
+                className={`w-full rounded-2xl bg-card shadow-card p-4 text-left transition-all ${hasContent ? 'card-hover' : 'opacity-50'}`}
               >
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">{scenario.categoryEmoji}</span>
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-foreground truncate">{scenario.title}</p>
+                    <p className="font-heading font-bold text-foreground truncate">{scenario.title}</p>
                     <div className="flex items-center gap-2 mt-1.5">
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-md ${DIFF_COLORS[scenario.difficulty]}`}>
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${DIFF_COLORS[scenario.difficulty]}`}>
                         {scenario.difficulty}
                       </span>
                       <span className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -72,7 +71,7 @@ export default function ScenarioSelection() {
                     </div>
                   </div>
                   {!hasContent && (
-                    <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-md">Sắp ra mắt</span>
+                    <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full font-bold">Sắp ra mắt</span>
                   )}
                 </div>
               </button>

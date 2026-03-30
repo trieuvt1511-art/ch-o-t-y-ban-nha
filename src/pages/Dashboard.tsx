@@ -23,22 +23,25 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center">
-      <div className="w-full max-w-[430px] px-4 pt-6 pb-24">
-        <div className="flex items-center justify-between mb-6 animate-fade-in">
+      <div className="w-full max-w-[430px] px-5 pt-6 pb-24 page-enter">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-heading font-bold text-foreground">
               Xin chào, {profile.name}! 🌟
             </h1>
             <p className="text-sm text-muted-foreground font-medium">Hôm nay bạn muốn học gì?</p>
           </div>
-          <button onClick={async () => { await logout(); navigate('/auth'); }} className="text-muted-foreground hover:text-foreground transition-colors p-2 rounded-xl hover:bg-muted">
+          <button onClick={async () => { await logout(); navigate('/auth'); }}
+            className="btn-icon bg-muted text-muted-foreground hover:text-foreground hover:bg-accent">
             <LogOut size={20} />
           </button>
         </div>
 
-        <div className="rounded-2xl bg-card shadow-card p-4 flex items-center gap-4 mb-4 animate-slide-up">
-          <div className="w-14 h-14 rounded-2xl gradient-secondary flex items-center justify-center shadow-card">
-            <Flame size={28} className="text-secondary-foreground" />
+        {/* Streak card */}
+        <div className="rounded-2xl bg-card shadow-card p-4 flex items-center gap-4 mb-4">
+          <div className="btn-icon gradient-secondary shadow-card">
+            <Flame size={26} className="text-secondary-foreground" />
           </div>
           <div className="flex-1">
             <p className="text-3xl font-heading font-bold text-foreground">{profile.streak}</p>
@@ -46,7 +49,8 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="rounded-2xl bg-card shadow-card p-5 mb-5 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+        {/* Progress ring */}
+        <div className="rounded-2xl bg-card shadow-card p-5 mb-5">
           <div className="flex items-center gap-5">
             <div className="relative w-20 h-20">
               <svg className="w-20 h-20 -rotate-90" viewBox="0 0 80 80">
@@ -69,11 +73,13 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3 px-1">Bắt đầu học</h2>
-        <div className="grid grid-cols-2 gap-3 mb-5 animate-slide-up" style={{ animationDelay: '0.15s' }}>
+        {/* Quick actions */}
+        <h2 className="text-sm font-extrabold text-muted-foreground uppercase tracking-wider mb-3 px-1">Bắt đầu học</h2>
+        <div className="grid grid-cols-2 gap-3 mb-5">
           {quickActions.map(({ icon: Icon, label, desc, path, gradient }) => (
-            <button key={path} onClick={() => navigate(path)} className={`${gradient} rounded-2xl p-4 text-left card-hover shadow-card`}>
-              <div className="w-10 h-10 rounded-xl bg-white/60 flex items-center justify-center mb-3">
+            <button key={path} onClick={() => navigate(path)}
+              className={`${gradient} rounded-2xl p-4 text-left card-hover shadow-card`}>
+              <div className="btn-icon bg-card/60 mb-3">
                 <Icon size={22} className="text-foreground" />
               </div>
               <p className="font-heading font-bold text-foreground">{label}</p>
@@ -82,7 +88,8 @@ export default function Dashboard() {
           ))}
         </div>
 
-        <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-3">
           {[
             { icon: BookOpen, label: 'Từ đã học', value: profile.words_learned },
             { icon: GraduationCap, label: 'Bài xong', value: profile.scenarios_completed },
@@ -91,7 +98,7 @@ export default function Dashboard() {
             <div key={label} className="rounded-2xl bg-card shadow-card p-3 text-center">
               <Icon size={20} className="mx-auto text-primary mb-1" />
               <p className="text-xl font-heading font-bold text-foreground">{value}</p>
-              <p className="text-xs text-muted-foreground font-medium">{label}</p>
+              <p className="text-[10px] text-muted-foreground font-bold">{label}</p>
             </div>
           ))}
         </div>
