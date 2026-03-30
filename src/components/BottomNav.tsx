@@ -1,10 +1,12 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { BookOpen, RotateCcw, Trophy } from 'lucide-react';
+import { BookOpen, RotateCcw, Trophy, Headphones, MessageCircle } from 'lucide-react';
 
 const NAV_ITEMS = [
   { path: '/scenarios', icon: BookOpen, label: 'Học' },
+  { path: '/listening', icon: Headphones, label: 'Nghe' },
+  { path: '/ai-chat', icon: MessageCircle, label: 'Nói AI' },
   { path: '/review', icon: RotateCcw, label: 'Ôn tập' },
-  { path: '/leaderboard', icon: Trophy, label: 'Bảng xếp hạng' },
+  { path: '/leaderboard', icon: Trophy, label: 'Xếp hạng' },
 ];
 
 export default function BottomNav() {
