@@ -14,7 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      learned_words: {
+        Row: {
+          id: string
+          learned_at: string
+          user_id: string
+          word_id: string
+        }
+        Insert: {
+          id?: string
+          learned_at?: string
+          user_id: string
+          word_id: string
+        }
+        Update: {
+          id?: string
+          learned_at?: string
+          user_id?: string
+          word_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          emoji: string
+          id: string
+          last_active_date: string
+          level: string
+          name: string
+          scenarios_completed: number
+          streak: number
+          weekly_xp: number
+          words_learned: number
+        }
+        Insert: {
+          created_at?: string
+          emoji?: string
+          id: string
+          last_active_date?: string
+          level?: string
+          name?: string
+          scenarios_completed?: number
+          streak?: number
+          weekly_xp?: number
+          words_learned?: number
+        }
+        Update: {
+          created_at?: string
+          emoji?: string
+          id?: string
+          last_active_date?: string
+          level?: string
+          name?: string
+          scenarios_completed?: number
+          streak?: number
+          weekly_xp?: number
+          words_learned?: number
+        }
+        Relationships: []
+      }
+      review_cards: {
+        Row: {
+          ease_factor: number
+          id: string
+          interval: number
+          next_review: string
+          repetitions: number
+          scenario_id: string
+          user_id: string
+          word_id: string
+        }
+        Insert: {
+          ease_factor?: number
+          id?: string
+          interval?: number
+          next_review?: string
+          repetitions?: number
+          scenario_id?: string
+          user_id: string
+          word_id: string
+        }
+        Update: {
+          ease_factor?: number
+          id?: string
+          interval?: number
+          next_review?: string
+          repetitions?: number
+          scenario_id?: string
+          user_id?: string
+          word_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

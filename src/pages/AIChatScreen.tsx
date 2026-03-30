@@ -16,7 +16,7 @@ const SCENARIOS_PROMPTS = [
 
 export default function AIChatScreen() {
   const navigate = useNavigate();
-  const { activeProfile } = useApp();
+  const { user } = useApp();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -118,7 +118,7 @@ export default function AIChatScreen() {
     setIsListening(true);
   }, [isListening]);
 
-  if (!activeProfile) {
+  if (!user) {
     navigate('/');
     return null;
   }
