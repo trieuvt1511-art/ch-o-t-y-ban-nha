@@ -14,6 +14,7 @@ import ListeningScreen from "./pages/ListeningScreen";
 import AIChatScreen from "./pages/AIChatScreen";
 import NotFound from "./pages/NotFound";
 import FlashcardScreen from "./pages/FlashcardScreen";
+import SentenceBuilderScreen from "./pages/SentenceBuilderScreen";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/scenarios" element={<ScenarioSelection />} />
             <Route path="/lesson/:id" element={<LessonScreen />} />
             <Route path="/flashcards" element={<FlashcardScreen />} />
+            <Route path="/sentence-builder" element={<SentenceBuilderScreen />} />
             <Route path="/review" element={<ReviewScreen />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/listening" element={<ListeningScreen />} />
