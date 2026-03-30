@@ -10,6 +10,8 @@ import ScenarioSelection from "./pages/ScenarioSelection";
 import LessonScreen from "./pages/LessonScreen";
 import ReviewScreen from "./pages/ReviewScreen";
 import Leaderboard from "./pages/Leaderboard";
+import ListeningScreen from "./pages/ListeningScreen";
+import AIChatScreen from "./pages/AIChatScreen";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
             <Route path="/lesson/:id" element={<LessonScreen />} />
             <Route path="/review" element={<ReviewScreen />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/listening" element={<ListeningScreen />} />
+            <Route path="/ai-chat" element={<AIChatScreen />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
