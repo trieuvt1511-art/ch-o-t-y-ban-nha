@@ -81,15 +81,15 @@ export default function ListeningScreen() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center">
-      <div className="w-full max-w-[430px] px-4 pt-6 pb-24">
+      <div className="w-full max-w-[430px] px-5 pt-6 pb-24 page-enter">
         <div className="flex items-center gap-3 mb-4">
           <button onClick={() => {
             if (dialogue !== null) { setSelectedDialogue(null); setDialogueAnswers({}); setShowResults(false); setCurrentLine(0); }
             else if (drill !== null) setSelectedDrill(null);
             else if (shadow !== null) { setSelectedShadow(null); setShadowStep(0); }
             else navigate('/dashboard');
-          }} className="text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft size={22} />
+          }} className="btn-icon bg-muted text-muted-foreground hover:text-foreground hover:bg-accent">
+            <ArrowLeft size={20} />
           </button>
           <h1 className="text-xl font-heading font-bold text-foreground">Luyện nghe</h1>
         </div>
