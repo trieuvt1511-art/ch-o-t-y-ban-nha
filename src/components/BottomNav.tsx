@@ -1,12 +1,12 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { BookOpen, RotateCcw, Trophy, Headphones, MessageCircle, Brain } from 'lucide-react';
+import { Home, BookOpen, Brain, MessageCircle, Headphones } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { path: '/scenarios', icon: BookOpen, label: 'Học' },
+  { path: '/dashboard', icon: Home, label: 'Trang chủ' },
+  { path: '/scenarios', icon: BookOpen, label: 'Bài học' },
   { path: '/flashcards', icon: Brain, label: 'Flashcard' },
+  { path: '/sentence-builder', icon: MessageCircle, label: 'Ngữ pháp' },
   { path: '/listening', icon: Headphones, label: 'Nghe' },
-  { path: '/ai-chat', icon: MessageCircle, label: 'Nói AI' },
-  { path: '/review', icon: RotateCcw, label: 'Ôn tập' },
 ];
 
 export default function BottomNav() {
@@ -17,7 +17,7 @@ export default function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-lg border-t border-border shadow-elevated z-50">
       <div className="max-w-[430px] mx-auto flex">
         {NAV_ITEMS.map(({ path, icon: Icon, label }) => {
-          const active = pathname.startsWith(path);
+          const active = pathname === path || (path !== '/dashboard' && pathname.startsWith(path));
           return (
             <button
               key={path}
