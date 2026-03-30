@@ -118,7 +118,7 @@ export default function AIChatScreen() {
     setIsListening(true);
   }, [isListening]);
 
-  if (!activeProfile) {
+  if (!user) {
     navigate('/');
     return null;
   }
