@@ -28,6 +28,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomeScreen />} />
+            <Route path="/auth" element={<AuthScreen />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/scenarios" element={<ScenarioSelection />} />
             <Route path="/lesson/:id" element={<LessonScreen />} />
