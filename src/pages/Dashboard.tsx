@@ -17,8 +17,8 @@ export default function Dashboard() {
   const quickActions = [
     { icon: BookOpen, label: 'Bài học', desc: 'Tình huống thực tế', path: '/scenarios', gradient: 'gradient-food' },
     { icon: Brain, label: 'Flashcard', desc: '3000 từ vựng', path: '/flashcards', gradient: 'gradient-travel' },
+    { icon: MessageCircle, label: 'Ghép câu', desc: 'Luyện cấu trúc', path: '/sentence-builder', gradient: 'gradient-home' },
     { icon: Headphones, label: 'Luyện nghe', desc: 'Phim & Video', path: '/listening', gradient: 'gradient-shopping' },
-    { icon: MessageCircle, label: 'Nói với AI', desc: 'Luyện hội thoại', path: '/ai-chat', gradient: 'gradient-social' },
   ];
 
   return (
