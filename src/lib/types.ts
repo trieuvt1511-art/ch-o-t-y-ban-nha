@@ -1,6 +1,6 @@
 export type Level = 'Beginner' | 'Elementary' | 'Intermediate';
 export type Difficulty = 'Dễ' | 'Trung bình' | 'Khó';
-export type Category = 'Ẩm thực' | 'Du lịch' | 'Mua sắm' | 'Công việc' | 'Xã hội';
+export type Category = 'Mua sắm' | 'Ẩm thực' | 'Gia đình' | 'Di chuyển' | 'Công việc' | 'Sức khỏe' | 'Xã hội' | 'Công nghệ';
 
 export interface Profile {
   id: string;
@@ -12,7 +12,7 @@ export interface Profile {
   streak: number;
   lastActiveDate: string;
   weeklyXP: number;
-  learnedWords: string[]; // word IDs
+  learnedWords: string[];
   reviewCards: ReviewCard[];
 }
 
@@ -22,7 +22,7 @@ export interface ReviewCard {
   easeFactor: number;
   interval: number;
   repetitions: number;
-  nextReview: string; // ISO date
+  nextReview: string;
 }
 
 export interface VocabWord {
@@ -49,6 +49,7 @@ export interface Scenario {
   title: string;
   difficulty: Difficulty;
   xp: number;
+  culturalTip?: string;
   vocabulary: VocabWord[];
   conversation: ChatMessage[];
 }
