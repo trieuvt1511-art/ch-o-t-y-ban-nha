@@ -13,6 +13,7 @@ import Leaderboard from "./pages/Leaderboard";
 import ListeningScreen from "./pages/ListeningScreen";
 import AIChatScreen from "./pages/AIChatScreen";
 import NotFound from "./pages/NotFound";
+import FlashcardScreen from "./pages/FlashcardScreen";
 
 const queryClient = new QueryClient();
 
