@@ -157,7 +157,7 @@ const LEVELS: SentenceLevel[] = [
 
 export default function SentenceBuilderScreen() {
   const navigate = useNavigate();
-  const { activeProfile } = useApp();
+  const { user } = useApp();
   const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
   const [exerciseIndex, setExerciseIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
