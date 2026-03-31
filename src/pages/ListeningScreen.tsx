@@ -503,11 +503,14 @@ export default function ListeningScreen() {
               </button>
             </div>
 
-            {/* Visual waveform placeholder */}
-            <div className="rounded-2xl bg-muted/50 p-4 mb-4 flex items-center justify-center gap-1">
-              {Array.from({ length: 30 }).map((_, i) => (
-                <div key={i} className="w-1 rounded-full bg-primary/30 transition-all" style={{ height: `${8 + Math.random() * 24}px` }} />
-              ))}
+            {/* Voice waveform comparison */}
+            <div className="mb-4">
+              <VoiceWaveformCompare
+                key={shadowStep}
+                referenceText={shadow.sentences[shadowStep].spanish}
+                voiceLang={voiceType}
+                speed={speed}
+              />
             </div>
 
             <div className="flex gap-3">
