@@ -30,6 +30,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomeScreen />} />
+            <Route path="/onboarding" element={<OnboardingScreen />} />
             <Route path="/auth" element={<AuthScreen />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/scenarios" element={<ScenarioSelection />} />
