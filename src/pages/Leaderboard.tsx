@@ -52,19 +52,14 @@ export default function Leaderboard() {
   const quest = getWeeklyQuest();
   const storyData = getStoryStarter();
 
-  if (!activeProfile) { navigate('/'); return null; }
-
-  const otherProfiles = profiles.filter(p => p.id !== activeProfile.id);
+  const otherProfiles = profiles.filter(p => p.id !== activeProfile?.id);
   const sortedProfiles = useMemo(() =>
     [...profiles].sort((a, b) => b.weeklyXP - a.weeklyXP), [profiles]);
   const topProfile = sortedProfiles[0];
 
-  const speak = (text: string) => {
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'es-ES';
-    u.rate = 0.85;
-    speechSynthesis.speak(u);
-  };
+  if (!activeProfile) { navigate('/'); return null; }
+
+  const speak = (text: string) => ttsSpeak(text);
 
   // Duel
   const startDuel = (member: LocalProfile) => {
