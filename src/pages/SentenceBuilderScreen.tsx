@@ -23,7 +23,7 @@ function getSlotColor(label: string) {
 
 export default function SentenceBuilderScreen() {
   const navigate = useNavigate();
-  const { user } = useApp();
+  const { activeProfile } = useApp();
   const [view, setView] = useState<'menu' | 'exercise' | 'grammar'>('menu');
   const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
   const [selectedGrammar, setSelectedGrammar] = useState<number | null>(null);

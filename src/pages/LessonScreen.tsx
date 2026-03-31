@@ -7,12 +7,13 @@ import { ArrowLeft, Volume2, Check } from 'lucide-react';
 export default function LessonScreen() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { user, learnedWords, addLearnedWord, removeLearnedWord } = useApp();
+  const { activeProfile, addLearnedWord, removeLearnedWord } = useApp();
+  const learnedWords = activeProfile?.learnedWords || [];
   const scenario = SCENARIOS.find(s => s.id === id);
   const [tab, setTab] = useState<'vocab' | 'practice'>('vocab');
   const [chatStep, setChatStep] = useState(0);
 
-  if (!scenario || !user) {
+  if (!scenario || !activeProfile) {
     navigate('/scenarios');
     return null;
   }

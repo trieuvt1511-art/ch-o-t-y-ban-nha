@@ -7,7 +7,8 @@ import { ArrowLeft, RotateCcw, Volume2 } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 
 export default function ReviewScreen() {
-  const { user, learnedWords } = useApp();
+  const { activeProfile } = useApp();
+  const learnedWords = activeProfile?.learnedWords || [];
   const navigate = useNavigate();
 
   const allVocab = useMemo(() => {
@@ -26,7 +27,7 @@ export default function ReviewScreen() {
   const [flipped, setFlipped] = useState(false);
   const [completed, setCompleted] = useState(false);
 
-  if (!user) { navigate('/auth'); return null; }
+  if (!activeProfile) { navigate('/'); return null; }
 
   const currentWord = reviewWords[currentIndex];
 

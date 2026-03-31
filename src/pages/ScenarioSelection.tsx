@@ -14,11 +14,11 @@ const DIFF_COLORS: Record<string, string> = {
 
 export default function ScenarioSelection() {
   const navigate = useNavigate();
-  const { profile } = useApp();
+  const { activeProfile } = useApp();
   const [filter, setFilter] = useState<Category | 'all'>('all');
 
   const filtered = filter === 'all' ? SCENARIOS : SCENARIOS.filter(s => s.category === filter);
-  const completedCount = profile?.scenarios_completed ?? 0;
+  const completedCount = activeProfile?.scenariosCompleted ?? 0;
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center">
