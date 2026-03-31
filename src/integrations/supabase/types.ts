@@ -14,6 +14,168 @@ export type Database = {
   }
   public: {
     Tables: {
+      cheers: {
+        Row: {
+          cheer_type: string
+          created_at: string
+          family_id: string
+          from_user_id: string
+          id: string
+          to_user_id: string
+        }
+        Insert: {
+          cheer_type?: string
+          created_at?: string
+          family_id: string
+          from_user_id: string
+          id?: string
+          to_user_id: string
+        }
+        Update: {
+          cheer_type?: string
+          created_at?: string
+          family_id?: string
+          from_user_id?: string
+          id?: string
+          to_user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cheers_family_id_fkey"
+            columns: ["family_id"]
+            isOneToOne: false
+            referencedRelation: "family_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      daily_phrase_log: {
+        Row: {
+          created_at: string
+          id: string
+          phrase_date: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          phrase_date?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          phrase_date?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      duel_results: {
+        Row: {
+          challenger_id: string
+          challenger_score: number
+          created_at: string
+          family_id: string
+          id: string
+          opponent_id: string
+          opponent_score: number
+        }
+        Insert: {
+          challenger_id: string
+          challenger_score?: number
+          created_at?: string
+          family_id: string
+          id?: string
+          opponent_id: string
+          opponent_score?: number
+        }
+        Update: {
+          challenger_id?: string
+          challenger_score?: number
+          created_at?: string
+          family_id?: string
+          id?: string
+          opponent_id?: string
+          opponent_score?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "duel_results_family_id_fkey"
+            columns: ["family_id"]
+            isOneToOne: false
+            referencedRelation: "family_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      family_groups: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          name: string
+          quest_progress: number | null
+          quest_target: number | null
+          quest_title: string | null
+          quest_week: string | null
+        }
+        Insert: {
+          code?: string
+          created_at?: string
+          id?: string
+          name?: string
+          quest_progress?: number | null
+          quest_target?: number | null
+          quest_title?: string | null
+          quest_week?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          name?: string
+          quest_progress?: number | null
+          quest_target?: number | null
+          quest_title?: string | null
+          quest_week?: string | null
+        }
+        Relationships: []
+      }
+      family_members: {
+        Row: {
+          color: string
+          family_id: string
+          id: string
+          joined_at: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          color?: string
+          family_id: string
+          id?: string
+          joined_at?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          color?: string
+          family_id?: string
+          id?: string
+          joined_at?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "family_members_family_id_fkey"
+            columns: ["family_id"]
+            isOneToOne: false
+            referencedRelation: "family_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       learned_words: {
         Row: {
           id: string
@@ -106,6 +268,79 @@ export type Database = {
           word_id?: string
         }
         Relationships: []
+      }
+      story_sentences: {
+        Row: {
+          created_at: string
+          family_id: string
+          id: string
+          order_num: number
+          sentence: string
+          user_id: string
+          week: string
+        }
+        Insert: {
+          created_at?: string
+          family_id: string
+          id?: string
+          order_num?: number
+          sentence: string
+          user_id: string
+          week?: string
+        }
+        Update: {
+          created_at?: string
+          family_id?: string
+          id?: string
+          order_num?: number
+          sentence?: string
+          user_id?: string
+          week?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "story_sentences_family_id_fkey"
+            columns: ["family_id"]
+            isOneToOne: false
+            referencedRelation: "family_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      voice_posts: {
+        Row: {
+          created_at: string
+          family_id: string
+          id: string
+          reactions: Json
+          text: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          family_id: string
+          id?: string
+          reactions?: Json
+          text?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          family_id?: string
+          id?: string
+          reactions?: Json
+          text?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "voice_posts_family_id_fkey"
+            columns: ["family_id"]
+            isOneToOne: false
+            referencedRelation: "family_groups"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
