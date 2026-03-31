@@ -1,10 +1,11 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, BookOpen, Brain, Headphones, Users } from 'lucide-react';
+import { Home, BookOpen, Brain, Type, Headphones, Users } from 'lucide-react';
 
 const NAV_ITEMS = [
   { path: '/dashboard', icon: Home, label: 'Home' },
   { path: '/scenarios', icon: BookOpen, label: 'Learn' },
   { path: '/flashcards', icon: Brain, label: 'Cards' },
+  { path: '/sentence-builder', icon: Type, label: 'Câu Dài' },
   { path: '/listening', icon: Headphones, label: 'Listen' },
   { path: '/leaderboard', icon: Users, label: 'Family' },
 ];
