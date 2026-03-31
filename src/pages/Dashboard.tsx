@@ -26,7 +26,7 @@ function getTodaySpanish() {
 export default function Dashboard() {
   const { activeProfile, updateProfile, addXP, setActiveProfileId } = useApp();
   const navigate = useNavigate();
-  const [phraseUsed, setPhraseUsed] = useState(false);
+  const [phraseUsed, setPhraseUsed] = useState(activeProfile?.dailyPhraseUsed || false);
 
   if (!activeProfile) { navigate('/'); return null; }
 
