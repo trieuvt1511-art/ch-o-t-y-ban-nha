@@ -1,8 +1,9 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
-import { ArrowLeft, Search, Volume2, Star, RotateCcw } from 'lucide-react';
+import { ArrowLeft, Search, Volume2, Star, RotateCcw, Bot } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
+import { FlashcardAIHelper } from '@/components/FlashcardAIHelper';
 import { FLASHCARD_CATEGORIES, FlashcardWord } from '@/lib/flashcard-data';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -56,6 +57,7 @@ export default function FlashcardScreen() {
   const [queue, setQueue] = useState<FlashcardWord[]>([]);
   const touchStartX = useRef(0);
   const touchDeltaX = useRef(0);
+  const [showAIHelper, setShowAIHelper] = useState(false);
 
   // Load review cards from localStorage profile
   useEffect(() => {
@@ -307,6 +309,10 @@ export default function FlashcardScreen() {
                   className="flex items-center gap-1.5 text-xs text-primary font-bold">
                   <Volume2 size={14} /> 🔊 Nghe câu ví dụ
                 </button>
+                <button onClick={(e) => { e.stopPropagation(); setShowAIHelper(true); }}
+                  className="mt-2 flex items-center gap-1.5 text-xs font-bold text-accent-foreground bg-accent rounded-full px-3 py-1.5">
+                  <Bot size={14} /> Hỏi AI 🤖
+                </button>
               </div>
             </div>
           </div>
@@ -335,6 +341,9 @@ export default function FlashcardScreen() {
         )}
       </div>
       <BottomNav />
+      {showAIHelper && currentWord && (
+        <FlashcardAIHelper word={currentWord.spanish} meaning={currentWord.vietnamese} onClose={() => setShowAIHelper(false)} />
+      )}
     </div>
   );
 }

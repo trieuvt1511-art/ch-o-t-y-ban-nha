@@ -6,6 +6,7 @@ import { ArrowLeft, Volume2, Send, Trophy, Copy, Check, Mic, MicOff, Square } fr
 import { speak as ttsSpeak } from '@/lib/speech';
 import { isRecordingSupported, createRecorder, RecordingResult } from '@/lib/speech';
 import BottomNav from '@/components/BottomNav';
+import { StorySuggestion } from '@/components/StorySuggestion';
 import { toast } from '@/hooks/use-toast';
 import { DAILY_PHRASES, DUEL_QUESTIONS, CHEER_OPTIONS, MEMBER_COLORS, getWeeklyQuest, getTodayPhrase, getStoryStarter } from '@/lib/family-data';
 
@@ -571,6 +572,11 @@ export default function Leaderboard() {
                     <Send size={16} />
                   </button>
                 </div>
+                {/* AI Story Suggestion */}
+                <StorySuggestion 
+                  currentStory={[storyData.starter, ...family.storySentences.map(s => s.sentence)].join(' ')} 
+                  onSelect={(s) => setNewSentence(s)} 
+                />
               </div>
             </div>
           </div>

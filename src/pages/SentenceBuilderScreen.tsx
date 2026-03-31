@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Lightbulb, Volume2, ChevronDown } from 'lucide-r
 import BottomNav from '@/components/BottomNav';
 import { useApp } from '@/context/AppContext';
 import { SENTENCE_LEVELS, GRAMMAR_TOPICS } from '@/lib/sentence-data';
+import { SentenceChecker } from '@/components/SentenceChecker';
 
 const SLOT_COLORS: Record<string, { bg: string; border: string; text: string; dot: string }> = {
   'Chủ ngữ': { bg: 'bg-blue-50', border: 'border-blue-400', text: 'text-blue-700', dot: '🔵' },
@@ -133,6 +134,9 @@ export default function SentenceBuilderScreen() {
                 ))}
               </div>
             </div>
+
+            {/* AI Sentence Checker */}
+            <SentenceChecker />
           </div>
         )}
 
