@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
 import { ArrowLeft, Search, Volume2, Star, RotateCcw, Bot } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
@@ -169,7 +169,7 @@ export default function FlashcardScreen() {
     };
   };
 
-  if (!activeProfile) { navigate('/'); return null; }
+  if (!activeProfile) return <Navigate to="/" replace />;
 
   // ========== CATEGORY VIEW ==========
   if (view === 'categories') {

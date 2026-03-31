@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useApp, LocalProfile } from '@/context/AppContext';
 import { getLevel, XP } from '@/lib/xp-system';
 import { ArrowLeft, Volume2, Send, Trophy, Copy, Check, Mic, MicOff, Square } from 'lucide-react';
@@ -58,7 +58,7 @@ export default function Leaderboard() {
     [...profiles].sort((a, b) => b.weeklyXP - a.weeklyXP), [profiles]);
   const topProfile = sortedProfiles[0];
 
-  if (!activeProfile) { navigate('/'); return null; }
+  if (!activeProfile) return <Navigate to="/" replace />;
 
   const speak = (text: string) => ttsSpeak(text);
 

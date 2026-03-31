@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
 import { SCENARIOS } from '@/lib/data';
 import { FLASHCARD_CATEGORIES } from '@/lib/flashcard-data';
@@ -27,7 +27,7 @@ export default function ReviewScreen() {
   const [flipped, setFlipped] = useState(false);
   const [completed, setCompleted] = useState(false);
 
-  if (!activeProfile) { navigate('/'); return null; }
+  if (!activeProfile) return <Navigate to="/" replace />;
 
   const currentWord = reviewWords[currentIndex];
 

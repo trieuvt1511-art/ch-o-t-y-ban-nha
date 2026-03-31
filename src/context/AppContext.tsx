@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { safeGetItem, safeSetItem, safeRemoveItem, createSafeId } from '@/lib/browser-safe';
 
 export interface LocalProfile {
   id: string;
@@ -52,15 +53,15 @@ const ACTIVE_KEY = 'holamind_active';
 const FAMILY_KEY = 'holamind_family';
 
 function loadProfiles(): LocalProfile[] {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
+  try { return JSON.parse(safeGetItem(STORAGE_KEY) || '[]'); } catch { return []; }
 }
-function saveProfiles(p: LocalProfile[]) { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); }
+function saveProfiles(p: LocalProfile[]) { safeSetItem(STORAGE_KEY, JSON.stringify(p)); }
 function loadFamily(): FamilyGroup {
   try {
-    return JSON.parse(localStorage.getItem(FAMILY_KEY) || 'null') || defaultFamily();
+    return JSON.parse(safeGetItem(FAMILY_KEY) || 'null') || defaultFamily();
   } catch { return defaultFamily(); }
 }
-function saveFamily(f: FamilyGroup) { localStorage.setItem(FAMILY_KEY, JSON.stringify(f)); }
+function saveFamily(f: FamilyGroup) { safeSetItem(FAMILY_KEY, JSON.stringify(f)); }
 function defaultFamily(): FamilyGroup {
   return {
     name: 'Gia đình',
@@ -79,7 +80,7 @@ const AppContext = createContext<AppContextType | null>(null);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [profiles, setProfiles] = useState<LocalProfile[]>(loadProfiles);
-  const [activeId, setActiveId] = useState<string | null>(() => localStorage.getItem(ACTIVE_KEY));
+  const [activeId, setActiveId] = useState<string | null>(() => safeGetItem(ACTIVE_KEY));
   const [family, setFamily] = useState<FamilyGroup>(loadFamily);
 
   const activeProfile = profiles.find(p => p.id === activeId) || null;
@@ -88,8 +89,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => { saveProfiles(profiles); }, [profiles]);
   useEffect(() => { saveFamily(family); }, [family]);
   useEffect(() => {
-    if (activeId) localStorage.setItem(ACTIVE_KEY, activeId);
-    else localStorage.removeItem(ACTIVE_KEY);
+    if (activeId) safeSetItem(ACTIVE_KEY, activeId);
+    else safeRemoveItem(ACTIVE_KEY);
   }, [activeId]);
 
   // Daily reset + streak logic
@@ -143,7 +144,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const createProfile = useCallback((name: string, emoji: string, level: string): LocalProfile => {
     const p: LocalProfile = {
-      id: crypto.randomUUID(),
+      id: createSafeId(),
       name, emoji, level,
       wordsLearned: 0, scenariosCompleted: 0, streak: 1,
       lastActiveDate: new Date().toISOString().split('T')[0],

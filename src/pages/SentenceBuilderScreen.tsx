@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Lightbulb, Volume2, ChevronDown } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import { useApp } from '@/context/AppContext';
@@ -34,7 +34,7 @@ export default function SentenceBuilderScreen() {
   const [score, setScore] = useState(0);
   const [showTip, setShowTip] = useState(false);
 
-  if (!activeProfile) { navigate('/'); return null; }
+  if (!activeProfile) return <Navigate to="/" replace />;
 
   const level = selectedLevel !== null ? SENTENCE_LEVELS[selectedLevel] : null;
   const exercise = level ? level.exercises[exerciseIndex] : null;

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
 import { EMOJI_OPTIONS } from '@/lib/data';
 import { getLevel } from '@/lib/xp-system';
@@ -20,10 +20,18 @@ export default function HomeScreen() {
   const [level, setLevel] = useState('Beginner');
 
   // If no member found locally but also no profiles, redirect to onboarding
-  const hasFamilySetup = !!localStorage.getItem('holamind_member_id');
+  const [hasFamilySetup, setHasFamilySetup] = useState(true);
+
+  useEffect(() => {
+    try {
+      setHasFamilySetup(!!window.localStorage?.getItem('holamind_member_id'));
+    } catch {
+      setHasFamilySetup(false);
+    }
+  }, []);
+
   if (!hasFamilySetup && profiles.length === 0) {
-    navigate('/onboarding');
-    return null;
+    return <Navigate to="/onboarding" replace />;
   }
 
   const handleCreate = () => {

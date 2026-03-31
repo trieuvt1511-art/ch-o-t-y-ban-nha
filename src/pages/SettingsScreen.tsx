@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Trash2, Save, AlertTriangle } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { getLevel } from '@/lib/xp-system';
@@ -18,7 +18,7 @@ export default function SettingsScreen() {
   const [showDelete, setShowDelete] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState('');
 
-  if (!activeProfile) { navigate('/'); return null; }
+  if (!activeProfile) return <Navigate to="/" replace />;
 
   const level = getLevel(activeProfile.totalXP);
   const hasChanges = name !== activeProfile.name || emoji !== activeProfile.emoji;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
 import { getLevel, getUnlockedBadges, ACHIEVEMENTS } from '@/lib/xp-system';
 import { Flame, BookOpen, Brain, Headphones, Swords, Users, Volume2, Check, LogOut, ArrowRight, Settings } from 'lucide-react';
@@ -28,7 +28,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [phraseUsed, setPhraseUsed] = useState(activeProfile?.dailyPhraseUsed || false);
 
-  if (!activeProfile) { navigate('/'); return null; }
+  if (!activeProfile) return <Navigate to="/" replace />;
 
   const profile = activeProfile;
   const lvl = getLevel(profile.totalXP);

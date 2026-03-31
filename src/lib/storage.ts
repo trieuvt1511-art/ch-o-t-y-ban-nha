@@ -1,29 +1,30 @@
 import { Profile, ReviewCard } from './types';
+import { safeGetItem, safeSetItem, safeRemoveItem, createSafeId } from './browser-safe';
 
 const PROFILES_KEY = 'holamind_profiles';
 const ACTIVE_PROFILE_KEY = 'holamind_active_profile';
 
 export function getProfiles(): Profile[] {
-  const data = localStorage.getItem(PROFILES_KEY);
+  const data = safeGetItem(PROFILES_KEY);
   return data ? JSON.parse(data) : [];
 }
 
 export function saveProfiles(profiles: Profile[]): void {
-  localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
+  safeSetItem(PROFILES_KEY, JSON.stringify(profiles));
 }
 
 export function getActiveProfileId(): string | null {
-  return localStorage.getItem(ACTIVE_PROFILE_KEY);
+  return safeGetItem(ACTIVE_PROFILE_KEY);
 }
 
 export function setActiveProfileId(id: string | null): void {
-  if (id) localStorage.setItem(ACTIVE_PROFILE_KEY, id);
-  else localStorage.removeItem(ACTIVE_PROFILE_KEY);
+  if (id) safeSetItem(ACTIVE_PROFILE_KEY, id);
+  else safeRemoveItem(ACTIVE_PROFILE_KEY);
 }
 
 export function createProfile(name: string, emoji: string, level: Profile['level']): Profile {
   return {
-    id: crypto.randomUUID(),
+    id: createSafeId(),
     name,
     emoji,
     level,
