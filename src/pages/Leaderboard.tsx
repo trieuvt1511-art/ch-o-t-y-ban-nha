@@ -40,6 +40,9 @@ export default function Leaderboard() {
 
   // Voice
   const [voiceText, setVoiceText] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingUrl, setRecordingUrl] = useState<string | null>(null);
+  const recorderRef = useRef<{ start: () => Promise<void>; stop: () => void } | null>(null);
 
   // Story
   const [newSentence, setNewSentence] = useState('');
