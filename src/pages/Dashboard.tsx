@@ -33,8 +33,8 @@ export default function Dashboard() {
   const profile = activeProfile;
   const lvl = getLevel(profile.totalXP);
   const todayPhrase = DAILY_PHRASES[new Date().getDate() % DAILY_PHRASES.length];
-  const activitiesToday = Math.min(5, Math.floor((profile.weeklyXP % 100) / 20));
-  const goalPercent = (activitiesToday / 5) * 100;
+  const activitiesToday = profile.dailyActivities || 0;
+  const goalPercent = Math.min(100, (activitiesToday / 5) * 100);
 
   const stats = {
     scenariosCompleted: profile.scenariosCompleted,
