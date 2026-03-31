@@ -34,7 +34,7 @@ export default function SentenceBuilderScreen() {
   const [score, setScore] = useState(0);
   const [showTip, setShowTip] = useState(false);
 
-  if (!activeProfile) { navigate('/'); return null; }
+  if (!activeProfile) return <Navigate to="/" replace />;
 
   const level = selectedLevel !== null ? SENTENCE_LEVELS[selectedLevel] : null;
   const exercise = level ? level.exercises[exerciseIndex] : null;

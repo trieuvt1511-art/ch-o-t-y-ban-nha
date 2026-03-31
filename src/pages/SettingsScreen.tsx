@@ -18,7 +18,7 @@ export default function SettingsScreen() {
   const [showDelete, setShowDelete] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState('');
 
-  if (!activeProfile) { navigate('/'); return null; }
+  if (!activeProfile) return <Navigate to="/" replace />;
 
   const level = getLevel(activeProfile.totalXP);
   const hasChanges = name !== activeProfile.name || emoji !== activeProfile.emoji;

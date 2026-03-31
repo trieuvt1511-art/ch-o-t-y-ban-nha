@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Navigate, useParams, useNavigate } from 'react-router-dom';
 import { SCENARIOS } from '@/lib/data';
 import { useApp } from '@/context/AppContext';
 import { ArrowLeft, Volume2, Check } from 'lucide-react';

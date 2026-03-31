@@ -58,7 +58,7 @@ export default function Leaderboard() {
     [...profiles].sort((a, b) => b.weeklyXP - a.weeklyXP), [profiles]);
   const topProfile = sortedProfiles[0];
 
-  if (!activeProfile) { navigate('/'); return null; }
+  if (!activeProfile) return <Navigate to="/" replace />;
 
   const speak = (text: string) => ttsSpeak(text);
 
