@@ -57,18 +57,11 @@ export default function FlashcardScreen() {
   const touchStartX = useRef(0);
   const touchDeltaX = useRef(0);
 
-  // Load review cards from DB
+  // Load review cards from localStorage profile
   useEffect(() => {
-    if (!user) return;
-    supabase.from('review_cards').select('word_id, ease_factor, interval, repetitions, next_review')
-      .eq('user_id', user.id).then(({ data }) => {
-        if (data) {
-          const map: Record<string, ReviewCardDB> = {};
-          data.forEach((c: any) => { map[c.word_id] = c; });
-          setReviewCards(map);
-        }
-      });
-  }, [user]);
+    if (!activeProfile) return;
+    setReviewCards(activeProfile.reviewCards || {});
+  }, [activeProfile]);
 
   // Build daily queue for selected category
   const buildQueue = useCallback((catIndex: number) => {
