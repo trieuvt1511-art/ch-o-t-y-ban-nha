@@ -1,128 +1,161 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import type { User } from '@supabase/supabase-js';
 
-interface DbProfile {
+export interface LocalProfile {
   id: string;
   name: string;
   emoji: string;
   level: string;
-  words_learned: number;
-  scenarios_completed: number;
+  wordsLearned: number;
+  scenariosCompleted: number;
   streak: number;
-  last_active_date: string;
-  weekly_xp: number;
+  lastActiveDate: string;
+  weeklyXP: number;
+  totalXP: number;
+  learnedWords: string[];
+  reviewCards: Record<string, { word_id: string; ease_factor: number; interval: number; repetitions: number; next_review: string }>;
+  duelsWon: number;
+  voiceNotes: number;
+  phraseLog: string[];
+}
+
+interface FamilyGroup {
+  name: string;
+  questTitle: string;
+  questTarget: number;
+  questProgress: number;
+  questWeek: string;
+  cheers: { from: string; to: string; type: string; date: string }[];
+  voicePosts: { id: string; userId: string; text: string; date: string }[];
+  storySentences: { userId: string; sentence: string; week: string }[];
+  duelResults: { challengerId: string; opponentId: string; challengerScore: number; opponentScore: number; date: string }[];
 }
 
 interface AppContextType {
-  user: User | null;
-  profile: DbProfile | null;
-  learnedWords: string[];
-  loading: boolean;
-  updateDbProfile: (data: Partial<DbProfile>) => Promise<void>;
-  addLearnedWord: (wordId: string) => Promise<void>;
-  removeLearnedWord: (wordId: string) => Promise<void>;
-  logout: () => Promise<void>;
+  profiles: LocalProfile[];
+  activeProfile: LocalProfile | null;
+  family: FamilyGroup;
+  setActiveProfileId: (id: string) => void;
+  createProfile: (name: string, emoji: string, level: string) => LocalProfile;
+  updateProfile: (data: Partial<LocalProfile>) => void;
+  deleteProfile: (id: string) => void;
+  addLearnedWord: (wordId: string) => void;
+  removeLearnedWord: (wordId: string) => void;
+  addXP: (amount: number) => void;
+  updateFamily: (data: Partial<FamilyGroup>) => void;
+}
+
+const STORAGE_KEY = 'holamind_profiles';
+const ACTIVE_KEY = 'holamind_active';
+const FAMILY_KEY = 'holamind_family';
+
+function loadProfiles(): LocalProfile[] {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
+}
+function saveProfiles(p: LocalProfile[]) { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); }
+function loadFamily(): FamilyGroup {
+  try {
+    return JSON.parse(localStorage.getItem(FAMILY_KEY) || 'null') || defaultFamily();
+  } catch { return defaultFamily(); }
+}
+function saveFamily(f: FamilyGroup) { localStorage.setItem(FAMILY_KEY, JSON.stringify(f)); }
+function defaultFamily(): FamilyGroup {
+  return {
+    name: 'Gia đình',
+    questTitle: 'Cả nhà học 50 từ về đồ ăn 🍕',
+    questTarget: 50,
+    questProgress: 0,
+    questWeek: new Date().toISOString().split('T')[0],
+    cheers: [],
+    voicePosts: [],
+    storySentences: [],
+    duelResults: [],
+  };
 }
 
 const AppContext = createContext<AppContextType | null>(null);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<DbProfile | null>(null);
-  const [learnedWords, setLearnedWords] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [profiles, setProfiles] = useState<LocalProfile[]>(loadProfiles);
+  const [activeId, setActiveId] = useState<string | null>(() => localStorage.getItem(ACTIVE_KEY));
+  const [family, setFamily] = useState<FamilyGroup>(loadFamily);
 
-  // Listen to auth state
+  const activeProfile = profiles.find(p => p.id === activeId) || null;
+
+  // Persist
+  useEffect(() => { saveProfiles(profiles); }, [profiles]);
+  useEffect(() => { saveFamily(family); }, [family]);
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (!session?.user) {
-        setProfile(null);
-        setLearnedWords([]);
-        setLoading(false);
-      }
-    });
+    if (activeId) localStorage.setItem(ACTIVE_KEY, activeId);
+    else localStorage.removeItem(ACTIVE_KEY);
+  }, [activeId]);
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      if (!session?.user) setLoading(false);
-    });
+  // Update streak on load
+  useEffect(() => {
+    if (!activeProfile) return;
+    const today = new Date().toISOString().split('T')[0];
+    if (activeProfile.lastActiveDate === today) return;
+    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+    const newStreak = activeProfile.lastActiveDate === yesterday ? activeProfile.streak + 1 : 1;
+    setProfiles(prev => prev.map(p => p.id === activeId ? { ...p, streak: newStreak, lastActiveDate: today } : p));
+  }, [activeId]);
 
-    return () => subscription.unsubscribe();
+  const setActiveProfileId = useCallback((id: string) => setActiveId(id), []);
+
+  const createProfile = useCallback((name: string, emoji: string, level: string): LocalProfile => {
+    const p: LocalProfile = {
+      id: crypto.randomUUID(),
+      name, emoji, level,
+      wordsLearned: 0, scenariosCompleted: 0, streak: 1,
+      lastActiveDate: new Date().toISOString().split('T')[0],
+      weeklyXP: 0, totalXP: 0,
+      learnedWords: [], reviewCards: {},
+      duelsWon: 0, voiceNotes: 0, phraseLog: [],
+    };
+    setProfiles(prev => [...prev, p]);
+    setActiveId(p.id);
+    return p;
   }, []);
 
-  // Load profile + learned words when user changes
-  useEffect(() => {
-    if (!user) return;
+  const updateProfile = useCallback((data: Partial<LocalProfile>) => {
+    setProfiles(prev => prev.map(p => p.id === activeId ? { ...p, ...data } : p));
+  }, [activeId]);
 
-    const loadData = async () => {
-      setLoading(true);
-      const [profileRes, wordsRes] = await Promise.all([
-        supabase.from('profiles').select('*').eq('id', user.id).single(),
-        supabase.from('learned_words').select('word_id').eq('user_id', user.id),
-      ]);
+  const deleteProfile = useCallback((id: string) => {
+    setProfiles(prev => prev.filter(p => p.id !== id));
+    if (activeId === id) setActiveId(null);
+  }, [activeId]);
 
-      if (profileRes.data) {
-        const p = profileRes.data as any;
-        // Update streak
-        const today = new Date().toISOString().split('T')[0];
-        const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-        if (p.last_active_date !== today) {
-          const newStreak = p.last_active_date === yesterday ? p.streak + 1 : 1;
-          await supabase.from('profiles').update({ streak: newStreak, last_active_date: today }).eq('id', user.id);
-          p.streak = newStreak;
-          p.last_active_date = today;
-        }
-        setProfile(p);
-      }
+  const addLearnedWord = useCallback((wordId: string) => {
+    setProfiles(prev => prev.map(p => {
+      if (p.id !== activeId || p.learnedWords.includes(wordId)) return p;
+      return { ...p, learnedWords: [...p.learnedWords, wordId], wordsLearned: p.wordsLearned + 1 };
+    }));
+  }, [activeId]);
 
-      if (wordsRes.data) {
-        setLearnedWords(wordsRes.data.map((w: any) => w.word_id));
-      }
-      setLoading(false);
-    };
+  const removeLearnedWord = useCallback((wordId: string) => {
+    setProfiles(prev => prev.map(p => {
+      if (p.id !== activeId) return p;
+      return { ...p, learnedWords: p.learnedWords.filter(w => w !== wordId), wordsLearned: Math.max(0, p.wordsLearned - 1) };
+    }));
+  }, [activeId]);
 
-    loadData();
-  }, [user]);
+  const addXP = useCallback((amount: number) => {
+    setProfiles(prev => prev.map(p => {
+      if (p.id !== activeId) return p;
+      return { ...p, weeklyXP: p.weeklyXP + amount, totalXP: p.totalXP + amount };
+    }));
+  }, [activeId]);
 
-  const updateDbProfile = useCallback(async (data: Partial<DbProfile>) => {
-    if (!user) return;
-    const { data: updated, error } = await supabase
-      .from('profiles')
-      .update(data as any)
-      .eq('id', user.id)
-      .select()
-      .single();
-    if (!error && updated) setProfile(updated as any);
-  }, [user]);
-
-  const addLearnedWord = useCallback(async (wordId: string) => {
-    if (!user) return;
-    await supabase.from('learned_words').upsert({ user_id: user.id, word_id: wordId });
-    setLearnedWords(prev => prev.includes(wordId) ? prev : [...prev, wordId]);
-    // Update count
-    const newCount = (profile?.words_learned ?? 0) + 1;
-    await updateDbProfile({ words_learned: newCount });
-  }, [user, profile, updateDbProfile]);
-
-  const removeLearnedWord = useCallback(async (wordId: string) => {
-    if (!user) return;
-    await supabase.from('learned_words').delete().eq('user_id', user.id).eq('word_id', wordId);
-    setLearnedWords(prev => prev.filter(id => id !== wordId));
-    const newCount = Math.max(0, (profile?.words_learned ?? 0) - 1);
-    await updateDbProfile({ words_learned: newCount });
-  }, [user, profile, updateDbProfile]);
-
-  const logout = useCallback(async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    setProfile(null);
-    setLearnedWords([]);
+  const updateFamily = useCallback((data: Partial<FamilyGroup>) => {
+    setFamily(prev => ({ ...prev, ...data }));
   }, []);
 
   return (
-    <AppContext.Provider value={{ user, profile, learnedWords, loading, updateDbProfile, addLearnedWord, removeLearnedWord, logout }}>
+    <AppContext.Provider value={{
+      profiles, activeProfile, family,
+      setActiveProfileId, createProfile, updateProfile, deleteProfile,
+      addLearnedWord, removeLearnedWord, addXP, updateFamily,
+    }}>
       {children}
     </AppContext.Provider>
   );
