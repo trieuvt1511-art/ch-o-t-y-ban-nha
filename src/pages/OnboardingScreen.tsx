@@ -133,7 +133,7 @@ export default function OnboardingScreen() {
           <div className="page-enter text-center">
             <div className="text-6xl mb-4">👨‍👩‍👧‍👦</div>
             <h1 className="text-2xl font-heading font-bold text-foreground mb-2">Chào mừng đến HolaBoBo!</h1>
-            <p className="text-sm text-muted-foreground mb-8">Học tiếng Tây Ban Nha cùng gia đình</p>
+            <p className="text-sm text-muted-foreground mb-8">Học tiếng Tây Ban Nha cùng gia đình Bo Bơ</p>
 
             <div className="space-y-3">
               <button

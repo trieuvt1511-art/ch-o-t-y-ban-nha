@@ -57,7 +57,7 @@ export default function HomeScreen() {
             <h1 className="text-4xl font-heading font-bold text-foreground tracking-tight">
               Hola<span className="text-primary">Mind</span> 🇪🇸
             </h1>
-            <p className="text-muted-foreground mt-1 text-sm font-medium">Học tiếng Tây Ban Nha cùng gia đình</p>
+            <p className="text-muted-foreground mt-1 text-sm font-medium">Học tiếng Tây Ban Nha cùng gia đình Bo Bơ</p>
           </div>
 
           {/* Active profile card */}
