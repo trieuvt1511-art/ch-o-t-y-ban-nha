@@ -125,7 +125,7 @@ export default function FlashcardScreen() {
     }
 
     // Update XP
-    addXP(XP.FLASHCARD_CORRECT);
+    addXP(10);
     
     setReviewCards(prev => ({ ...prev, [currentWord.id]: updated }));
     
