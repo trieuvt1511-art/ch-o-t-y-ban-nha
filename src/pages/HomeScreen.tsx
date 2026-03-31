@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
 import { EMOJI_OPTIONS } from '@/lib/data';
 import { getLevel } from '@/lib/xp-system';

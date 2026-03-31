@@ -1,4 +1,5 @@
 import { Profile, ReviewCard } from './types';
+import { safeGetItem, safeSetItem, safeRemoveItem, createSafeId } from './browser-safe';
 
 const PROFILES_KEY = 'holamind_profiles';
 const ACTIVE_PROFILE_KEY = 'holamind_active_profile';
