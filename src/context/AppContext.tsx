@@ -92,15 +92,52 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     else localStorage.removeItem(ACTIVE_KEY);
   }, [activeId]);
 
-  // Update streak on load
+  // Daily reset + streak logic
   useEffect(() => {
     if (!activeProfile) return;
     const today = new Date().toISOString().split('T')[0];
     if (activeProfile.lastActiveDate === today) return;
+
     const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
     const newStreak = activeProfile.lastActiveDate === yesterday ? activeProfile.streak + 1 : 1;
-    setProfiles(prev => prev.map(p => p.id === activeId ? { ...p, streak: newStreak, lastActiveDate: today } : p));
+
+    // Check if it's a new week (Monday reset for weeklyXP)
+    const lastDate = new Date(activeProfile.lastActiveDate);
+    const now = new Date();
+    const lastMonday = new Date(lastDate); lastMonday.setDate(lastDate.getDate() - ((lastDate.getDay() + 6) % 7));
+    const thisMonday = new Date(now); thisMonday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+    const isNewWeek = thisMonday.toISOString().split('T')[0] !== lastMonday.toISOString().split('T')[0];
+
+    setProfiles(prev => prev.map(p => p.id === activeId ? {
+      ...p,
+      streak: newStreak,
+      lastActiveDate: today,
+      dailyActivities: 0,
+      dailyPhraseUsed: false,
+      dailyDuelDone: false,
+      weeklyXP: isNewWeek ? 0 : p.weeklyXP,
+    } : p));
   }, [activeId]);
+
+  // Midnight auto-reset timer
+  useEffect(() => {
+    const now = new Date();
+    const midnight = new Date(now);
+    midnight.setHours(24, 0, 0, 0);
+    const msUntilMidnight = midnight.getTime() - now.getTime();
+
+    const timer = setTimeout(() => {
+      // Reset all profiles' daily fields at midnight
+      setProfiles(prev => prev.map(p => ({
+        ...p,
+        dailyActivities: 0,
+        dailyPhraseUsed: false,
+        dailyDuelDone: false,
+      })));
+    }, msUntilMidnight);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const setActiveProfileId = useCallback((id: string) => setActiveId(id), []);
 
