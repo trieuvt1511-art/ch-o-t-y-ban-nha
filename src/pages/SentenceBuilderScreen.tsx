@@ -1,9 +1,25 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Check, X, ArrowRight, Lightbulb, BookOpen } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Lightbulb, Volume2, ChevronDown } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import { useApp } from '@/context/AppContext';
 import { SENTENCE_LEVELS, GRAMMAR_TOPICS } from '@/lib/sentence-data';
+
+const SLOT_COLORS: Record<string, { bg: string; border: string; text: string; dot: string }> = {
+  'Chủ ngữ': { bg: 'bg-blue-50', border: 'border-blue-400', text: 'text-blue-700', dot: '🔵' },
+  'Động từ': { bg: 'bg-green-50', border: 'border-green-400', text: 'text-green-700', dot: '🟢' },
+  'Tân ngữ': { bg: 'bg-orange-50', border: 'border-orange-400', text: 'text-orange-700', dot: '🟠' },
+  'Thời gian': { bg: 'bg-purple-50', border: 'border-purple-400', text: 'text-purple-700', dot: '🟣' },
+  'Địa điểm': { bg: 'bg-red-50', border: 'border-red-400', text: 'text-red-700', dot: '🔴' },
+  'Liên từ': { bg: 'bg-gray-50', border: 'border-gray-400', text: 'text-gray-700', dot: '⚪' },
+  'Mệnh đề 1': { bg: 'bg-blue-50', border: 'border-blue-400', text: 'text-blue-700', dot: '🔵' },
+  'Mệnh đề 2': { bg: 'bg-green-50', border: 'border-green-400', text: 'text-green-700', dot: '🟢' },
+};
+const DEFAULT_COLOR = { bg: 'bg-muted', border: 'border-border', text: 'text-foreground', dot: '⚪' };
+
+function getSlotColor(label: string) {
+  return SLOT_COLORS[label] || DEFAULT_COLOR;
+}
 
 export default function SentenceBuilderScreen() {
   const navigate = useNavigate();
@@ -24,6 +40,19 @@ export default function SentenceBuilderScreen() {
   const grammar = selectedGrammar !== null ? GRAMMAR_TOPICS[selectedGrammar] : null;
 
   const allCorrect = exercise ? exercise.slots.every((slot, i) => answers[i] === slot.correct) : false;
+  const allFilled = exercise ? exercise.slots.every((_, i) => answers[i]) : false;
+
+  // Build live sentence from current answers
+  const liveSentence = exercise
+    ? exercise.slots.map((_, i) => answers[i] || '___').join(' ') + (allFilled ? '.' : '')
+    : '';
+
+  const speak = (text: string) => {
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'es-ES';
+    u.rate = 0.85;
+    speechSynthesis.speak(u);
+  };
 
   const handleSubmit = () => { setSubmitted(true); if (allCorrect) setScore(prev => prev + 1); };
 
@@ -57,9 +86,9 @@ export default function SentenceBuilderScreen() {
           )}
         </div>
 
+        {/* ===== MENU VIEW ===== */}
         {view === 'menu' && (
           <div className="space-y-6 animate-slide-up">
-            {/* Sentence Levels */}
             <div>
               <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3">Luyện ghép câu</h2>
               <div className="space-y-3">
@@ -80,7 +109,18 @@ export default function SentenceBuilderScreen() {
               </div>
             </div>
 
-            {/* Grammar Topics */}
+            {/* Color legend */}
+            <div className="bg-card rounded-2xl shadow-card p-4">
+              <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Bảng màu thành phần câu</h3>
+              <div className="flex flex-wrap gap-2">
+                {Object.entries(SLOT_COLORS).slice(0, 6).map(([label, c]) => (
+                  <span key={label} className={`text-[10px] font-bold px-2 py-1 rounded-lg ${c.bg} ${c.text} border ${c.border}`}>
+                    {c.dot} {label}
+                  </span>
+                ))}
+              </div>
+            </div>
+
             <div>
               <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3">📖 Ngữ pháp</h2>
               <div className="grid grid-cols-2 gap-3">
@@ -96,18 +136,17 @@ export default function SentenceBuilderScreen() {
           </div>
         )}
 
+        {/* ===== GRAMMAR VIEW ===== */}
         {view === 'grammar' && grammar && (
           <div className="space-y-5 animate-slide-up">
             <div className={`${grammar.gradient} rounded-2xl p-5 text-center`}>
               <span className="text-4xl">{grammar.emoji}</span>
               <p className="font-heading font-bold text-xl text-foreground mt-2">{grammar.title}</p>
             </div>
-
             {grammar.sections.map((section, i) => (
               <div key={i} className="rounded-2xl bg-card shadow-card p-4">
                 <h3 className="font-heading font-bold text-foreground mb-2">{section.title}</h3>
                 {section.content && <p className="text-sm text-muted-foreground mb-3">{section.content}</p>}
-
                 {section.table && (
                   <div className="overflow-x-auto mb-3">
                     <table className="w-full text-xs">
@@ -124,7 +163,6 @@ export default function SentenceBuilderScreen() {
                     </table>
                   </div>
                 )}
-
                 {section.examples && (
                   <div className="space-y-1.5 mb-2">
                     {section.examples.map((ex, j) => (
@@ -135,7 +173,6 @@ export default function SentenceBuilderScreen() {
                     ))}
                   </div>
                 )}
-
                 {section.memoryTrick && (
                   <div className="bg-secondary/10 rounded-lg px-3 py-2 text-xs font-bold text-secondary">
                     {section.memoryTrick}
@@ -146,8 +183,10 @@ export default function SentenceBuilderScreen() {
           </div>
         )}
 
+        {/* ===== EXERCISE VIEW ===== */}
         {view === 'exercise' && exercise && (
           <div className="animate-slide-up">
+            {/* Progress bar */}
             <div className="h-1.5 bg-muted rounded-full overflow-hidden mb-5">
               <div className="h-full gradient-primary rounded-full transition-all duration-300" style={{ width: `${((exerciseIndex + 1) / level!.exercises.length) * 100}%` }} />
             </div>
@@ -159,35 +198,86 @@ export default function SentenceBuilderScreen() {
 
             <p className="text-lg font-heading font-bold text-foreground mb-5 text-center">{exercise.instruction}</p>
 
+            {/* Colored word blocks with dropdowns */}
             <div className="space-y-3 mb-5">
-              {exercise.slots.map((slot, i) => (
-                <div key={i}>
-                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5 block">{slot.label}</label>
-                  <div className="flex gap-2 flex-wrap">
-                    {slot.options.map(opt => {
-                      const selected = answers[i] === opt;
-                      const isCorrect = submitted && opt === slot.correct;
-                      const isWrong = submitted && selected && opt !== slot.correct;
-                      return (
-                        <button key={opt} onClick={() => !submitted && setAnswers(prev => ({ ...prev, [i]: opt }))} disabled={submitted}
-                          className={`px-3 py-2 rounded-xl text-sm font-bold transition-all ${isCorrect ? 'bg-success text-success-foreground shadow-card animate-bounce-in' : isWrong ? 'bg-destructive text-destructive-foreground animate-shake' : selected ? 'gradient-primary text-primary-foreground shadow-card scale-105' : 'bg-card shadow-card text-foreground hover:bg-accent'}`}>
-                          {opt}
-                          {isCorrect && <Check size={12} className="inline ml-1" />}
-                          {isWrong && <X size={12} className="inline ml-1" />}
-                        </button>
-                      );
-                    })}
+              {exercise.slots.map((slot, i) => {
+                const color = getSlotColor(slot.label);
+                const selected = answers[i];
+                const isCorrect = submitted && selected === slot.correct;
+                const isWrong = submitted && selected && selected !== slot.correct;
+
+                return (
+                  <div key={i} className={`rounded-2xl border-2 p-3 transition-all ${
+                    isCorrect ? 'border-green-400 bg-green-50' :
+                    isWrong ? 'border-red-400 bg-red-50' :
+                    selected ? `${color.border} ${color.bg}` :
+                    'border-border bg-card'
+                  }`}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-sm">{color.dot}</span>
+                      <span className={`text-xs font-bold uppercase tracking-wider ${color.text}`}>{slot.label}</span>
+                      {isCorrect && <span className="ml-auto text-green-600 text-sm">✅</span>}
+                      {isWrong && <span className="ml-auto text-red-500 text-xs font-bold">✗ → {slot.correct}</span>}
+                    </div>
+                    <div className="relative">
+                      <select
+                        value={selected || ''}
+                        onChange={e => !submitted && setAnswers(prev => ({ ...prev, [i]: e.target.value }))}
+                        disabled={submitted}
+                        className={`w-full appearance-none rounded-xl min-h-[44px] px-4 pr-10 font-bold text-sm transition-all cursor-pointer
+                          ${selected ? `${color.bg} ${color.text} border ${color.border}` : 'bg-muted text-muted-foreground border border-border'}
+                          ${submitted ? 'opacity-80 cursor-not-allowed' : 'hover:shadow-card'}
+                          focus:outline-none focus:ring-2 focus:ring-ring
+                        `}
+                      >
+                        <option value="" disabled>Chọn {slot.label.toLowerCase()}...</option>
+                        {slot.options.map(opt => (
+                          <option key={opt} value={opt}>{opt}</option>
+                        ))}
+                      </select>
+                      <ChevronDown size={16} className={`absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none ${color.text}`} />
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
-            <div className="bg-card rounded-2xl shadow-card p-4 mb-4 text-center min-h-[50px] flex items-center justify-center">
-              <p className="text-base font-heading font-bold text-foreground">
-                {exercise.slots.map((_, i) => answers[i] || '___').join(' ')}{exercise.slots.every((_, i) => answers[i]) ? '.' : ''}
+            {/* Live sentence preview + TTS */}
+            <div className="bg-card rounded-2xl shadow-card p-4 mb-4">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Câu của bạn</span>
+                <button
+                  onClick={() => allFilled && speak(exercise.slots.map((_, i) => answers[i]).join(' '))}
+                  disabled={!allFilled}
+                  className="flex items-center gap-1 text-xs text-primary font-bold disabled:opacity-30"
+                >
+                  <Volume2 size={14} /> Nghe
+                </button>
+              </div>
+              {/* Colored inline blocks */}
+              <div className="flex flex-wrap gap-1.5 items-center min-h-[36px]">
+                {exercise.slots.map((slot, i) => {
+                  const color = getSlotColor(slot.label);
+                  const word = answers[i];
+                  return word ? (
+                    <span key={i} className={`px-2.5 py-1 rounded-lg text-sm font-bold ${color.bg} ${color.text} border ${color.border}`}>
+                      {word}
+                    </span>
+                  ) : (
+                    <span key={i} className="px-2.5 py-1 rounded-lg text-sm font-bold bg-muted text-muted-foreground border border-dashed border-border">
+                      ___
+                    </span>
+                  );
+                })}
+                {allFilled && <span className="text-foreground font-bold">.</span>}
+              </div>
+              {/* Real-time Vietnamese translation */}
+              <p className="text-xs text-muted-foreground mt-2 italic">
+                {submitted ? exercise.translation : (allFilled ? `→ ${exercise.translation}` : 'Chọn từ để xem bản dịch...')}
               </p>
             </div>
 
+            {/* Result */}
             {submitted && (
               <div className={`rounded-2xl p-4 mb-4 text-center animate-scale-in ${allCorrect ? 'bg-success/10' : 'bg-destructive/10'}`}>
                 <p className="font-heading font-bold text-lg">{allCorrect ? '🎉 Xuất sắc!' : '😅 Thử lại nhé!'}</p>
@@ -195,6 +285,7 @@ export default function SentenceBuilderScreen() {
               </div>
             )}
 
+            {/* Tip */}
             {exercise.tip && (
               <button onClick={() => setShowTip(!showTip)} className="w-full flex items-center gap-2 text-sm text-secondary font-bold mb-4">
                 <Lightbulb size={16} />{showTip ? 'Ẩn gợi ý' : 'Xem gợi ý'}
@@ -204,8 +295,9 @@ export default function SentenceBuilderScreen() {
               <div className="bg-secondary/10 rounded-xl p-3 mb-4 text-sm text-foreground animate-slide-up">💡 {exercise.tip}</div>
             )}
 
+            {/* Action button */}
             {!submitted ? (
-              <button onClick={handleSubmit} disabled={!exercise.slots.every((_, i) => answers[i])}
+              <button onClick={handleSubmit} disabled={!allFilled}
                 className="w-full gradient-primary text-primary-foreground rounded-xl py-3.5 font-bold shadow-card hover:opacity-90 transition-opacity disabled:opacity-40">Kiểm tra</button>
             ) : (
               <button onClick={handleNext}
