@@ -83,6 +83,9 @@ export default function Dashboard() {
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm font-bold">{lvl.badge}</span>
+            <button onClick={() => navigate('/settings')} className="btn-icon bg-muted text-muted-foreground w-10 h-10 min-h-0">
+              <Settings size={16} />
+            </button>
             <button onClick={handleLogout} className="btn-icon bg-muted text-muted-foreground w-10 h-10 min-h-0">
               <LogOut size={16} />
             </button>
