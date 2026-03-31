@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useApp, LocalProfile } from '@/context/AppContext';
 import { getLevel, XP } from '@/lib/xp-system';
 import { ArrowLeft, Volume2, Send, Trophy, Copy, Check, Mic, MicOff, Square } from 'lucide-react';

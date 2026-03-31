@@ -15,8 +15,7 @@ export default function LessonScreen() {
   const [chatStep, setChatStep] = useState(0);
 
   if (!scenario || !activeProfile) {
-    navigate('/scenarios');
-    return null;
+    return <Navigate to="/scenarios" replace />;
   }
 
   const learnedSet = new Set(learnedWords);
