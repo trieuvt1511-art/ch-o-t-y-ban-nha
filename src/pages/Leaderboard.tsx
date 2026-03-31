@@ -172,6 +172,18 @@ export default function Leaderboard() {
     return () => { supabase.removeChannel(channel); };
   }, [familyId, user, loadFamily]);
 
+  // Sorted members by XP
+  const sortedMembers = useMemo(() =>
+    [...members].sort((a, b) => (b.profile?.weekly_xp || 0) - (a.profile?.weekly_xp || 0)),
+    [members]
+  );
+  const topMember = sortedMembers[0];
+
+  const getMemberName = (userId: string) => members.find(m => m.user_id === userId)?.profile?.name || '?';
+  const getMemberEmoji = (userId: string) => members.find(m => m.user_id === userId)?.profile?.emoji || '😊';
+
+  const storyData = getStoryStarter();
+
   if (!user) { navigate('/auth'); return null; }
 
   // Create family
