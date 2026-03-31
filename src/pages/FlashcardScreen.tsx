@@ -169,7 +169,7 @@ export default function FlashcardScreen() {
     };
   };
 
-  if (!activeProfile) { navigate('/'); return null; }
+  if (!activeProfile) return <Navigate to="/" replace />;
 
   // ========== CATEGORY VIEW ==========
   if (view === 'categories') {

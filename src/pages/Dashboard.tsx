@@ -28,7 +28,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [phraseUsed, setPhraseUsed] = useState(activeProfile?.dailyPhraseUsed || false);
 
-  if (!activeProfile) { navigate('/'); return null; }
+  if (!activeProfile) return <Navigate to="/" replace />;
 
   const profile = activeProfile;
   const lvl = getLevel(profile.totalXP);
