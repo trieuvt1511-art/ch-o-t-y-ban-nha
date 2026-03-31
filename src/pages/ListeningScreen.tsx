@@ -81,6 +81,8 @@ export default function ListeningScreen() {
       const u = new SpeechSynthesisUtterance(lines[i].spanish);
       u.lang = voiceType;
       u.rate = speed;
+      const voice = pickBestVoice(voiceType);
+      if (voice) u.voice = voice;
       u.onboundary = (e) => {
         if (e.name === 'word') { setCurrentWord(w); w++; }
       };
