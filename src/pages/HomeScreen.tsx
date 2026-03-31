@@ -19,6 +19,13 @@ export default function HomeScreen() {
   const [emoji, setEmoji] = useState('😊');
   const [level, setLevel] = useState('Beginner');
 
+  // If no member found locally but also no profiles, redirect to onboarding
+  const hasFamilySetup = !!localStorage.getItem('holamind_member_id');
+  if (!hasFamilySetup && profiles.length === 0) {
+    navigate('/onboarding');
+    return null;
+  }
+
   const handleCreate = () => {
     if (!name.trim() || profiles.length >= 8) return;
     createProfile(name.trim(), emoji, level);
