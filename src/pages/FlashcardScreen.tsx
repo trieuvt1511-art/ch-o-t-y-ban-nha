@@ -125,7 +125,7 @@ export default function FlashcardScreen() {
     }
 
     // Update XP
-    addXP(XP.FLASHCARD_CORRECT);
+    addXP(10);
     
     setReviewCards(prev => ({ ...prev, [currentWord.id]: updated }));
     
@@ -167,7 +167,7 @@ export default function FlashcardScreen() {
     };
   };
 
-  if (!user) { navigate('/auth'); return null; }
+  if (!activeProfile) { navigate('/'); return null; }
 
   // ========== CATEGORY VIEW ==========
   if (view === 'categories') {
