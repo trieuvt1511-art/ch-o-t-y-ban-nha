@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 import FlashcardScreen from "./pages/FlashcardScreen";
 import SentenceBuilderScreen from "./pages/SentenceBuilderScreen";
 import AuthScreen from "./pages/AuthScreen";
+import SettingsScreen from "./pages/SettingsScreen";
 
 const queryClient = new QueryClient();
 
