@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Play, Pause, Volume2, MessageCircle, Music, Ear, Radio, Mic, BookOpen, ChevronDown } from 'lucide-react';
 import { SHORT_DIALOGUES, PRONUNCIATION_DRILLS, SHADOW_EXERCISES, SONGS, PODCAST_EPISODES } from '@/lib/listening-exercises';
 import BottomNav from '@/components/BottomNav';
+import { VoiceWaveformCompare } from '@/components/VoiceWaveformCompare';
 
 const TABS = [
   { key: 'dialogues' as const, label: 'Hội thoại', icon: MessageCircle, emoji: '💬' },
