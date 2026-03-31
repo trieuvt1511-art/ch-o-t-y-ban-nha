@@ -309,6 +309,10 @@ export default function FlashcardScreen() {
                   className="flex items-center gap-1.5 text-xs text-primary font-bold">
                   <Volume2 size={14} /> 🔊 Nghe câu ví dụ
                 </button>
+                <button onClick={(e) => { e.stopPropagation(); setShowAIHelper(true); }}
+                  className="mt-2 flex items-center gap-1.5 text-xs font-bold text-accent-foreground bg-accent rounded-full px-3 py-1.5">
+                  <Bot size={14} /> Hỏi AI 🤖
+                </button>
               </div>
             </div>
           </div>
