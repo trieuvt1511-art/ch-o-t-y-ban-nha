@@ -57,6 +57,7 @@ export default function FlashcardScreen() {
   const [queue, setQueue] = useState<FlashcardWord[]>([]);
   const touchStartX = useRef(0);
   const touchDeltaX = useRef(0);
+  const [showAIHelper, setShowAIHelper] = useState(false);
 
   // Load review cards from localStorage profile
   useEffect(() => {
