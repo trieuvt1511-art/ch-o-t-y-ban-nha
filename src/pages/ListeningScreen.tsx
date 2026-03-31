@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Play, Pause, Volume2, MessageCircle, Music, Ear, Radio, Mic, BookOpen, ChevronDown } from 'lucide-react';
 import { SHORT_DIALOGUES, PRONUNCIATION_DRILLS, SHADOW_EXERCISES, SONGS, PODCAST_EPISODES } from '@/lib/listening-exercises';
 import BottomNav from '@/components/BottomNav';
+import { VoiceWaveformCompare } from '@/components/VoiceWaveformCompare';
 
 const TABS = [
   { key: 'dialogues' as const, label: 'Hội thoại', icon: MessageCircle, emoji: '💬' },
@@ -502,11 +503,14 @@ export default function ListeningScreen() {
               </button>
             </div>
 
-            {/* Visual waveform placeholder */}
-            <div className="rounded-2xl bg-muted/50 p-4 mb-4 flex items-center justify-center gap-1">
-              {Array.from({ length: 30 }).map((_, i) => (
-                <div key={i} className="w-1 rounded-full bg-primary/30 transition-all" style={{ height: `${8 + Math.random() * 24}px` }} />
-              ))}
+            {/* Voice waveform comparison */}
+            <div className="mb-4">
+              <VoiceWaveformCompare
+                key={shadowStep}
+                referenceText={shadow.sentences[shadowStep].spanish}
+                voiceLang={voiceType}
+                speed={speed}
+              />
             </div>
 
             <div className="flex gap-3">
