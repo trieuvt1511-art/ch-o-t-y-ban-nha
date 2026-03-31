@@ -55,9 +55,9 @@ export default function HomeScreen() {
         <div className="w-full max-w-[430px] page-enter">
           <div className="text-center mb-6">
             <h1 className="text-4xl font-heading font-bold text-foreground tracking-tight">
-              Hola<span className="text-primary">Mind</span> 🇪🇸
+              Hola<span className="text-primary">BoBo</span> 🇪🇸
             </h1>
-            <p className="text-muted-foreground mt-1 text-sm font-medium">Học tiếng Tây Ban Nha cùng gia đình</p>
+            <p className="text-muted-foreground mt-1 text-sm font-medium">Học tiếng Tây Ban Nha cùng gia đình Bo Bơ</p>
           </div>
 
           {/* Active profile card */}

@@ -62,7 +62,7 @@ export default function AuthScreen() {
           <h1 className="text-3xl font-heading font-bold text-foreground">
             Hola<span className="text-primary">BoBo</span> 🇪🇸
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">Học tiếng Tây Ban Nha cùng gia đình</p>
+          <p className="text-sm text-muted-foreground mt-1">Học tiếng Tây Ban Nha cùng gia đình Bo Bơ</p>
         </div>
 
         {/* Tabs */}
