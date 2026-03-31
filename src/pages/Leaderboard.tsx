@@ -572,6 +572,11 @@ export default function Leaderboard() {
                     <Send size={16} />
                   </button>
                 </div>
+                {/* AI Story Suggestion */}
+                <StorySuggestion 
+                  currentStory={[storyData.starter, ...family.storySentences.map(s => s.sentence)].join(' ')} 
+                  onSelect={(s) => setNewSentence(s)} 
+                />
               </div>
             </div>
           </div>
