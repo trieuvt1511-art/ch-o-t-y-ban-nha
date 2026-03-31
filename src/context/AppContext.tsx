@@ -89,8 +89,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => { saveProfiles(profiles); }, [profiles]);
   useEffect(() => { saveFamily(family); }, [family]);
   useEffect(() => {
-    if (activeId) localStorage.setItem(ACTIVE_KEY, activeId);
-    else localStorage.removeItem(ACTIVE_KEY);
+    if (activeId) safeSetItem(ACTIVE_KEY, activeId);
+    else safeRemoveItem(ACTIVE_KEY);
   }, [activeId]);
 
   // Daily reset + streak logic
