@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Fredoka+One&family=Fredoka:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Fredoka+One&family=Fredoka:wght@400;500;600;700&display=swap&text=');
+
+/* Font-face fallback for older mobile browsers */
+@supports not (font-display: swap) {
+  body { font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }
+}
 
 @tailwind base;
 @tailwind components;

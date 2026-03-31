@@ -1,4 +1,5 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
+import { pickBestVoice, loadVoices } from '@/lib/speech';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Play, Pause, Volume2, MessageCircle, Music, Ear, Radio, Mic, BookOpen, ChevronDown } from 'lucide-react';
 import { SHORT_DIALOGUES, PRONUNCIATION_DRILLS, SHADOW_EXERCISES, SONGS, PODCAST_EPISODES } from '@/lib/listening-exercises';
@@ -49,11 +50,17 @@ export default function ListeningScreen() {
   const utterRef = useRef<SpeechSynthesisUtterance | null>(null);
   const playingRef = useRef(false);
 
+  // Pre-load voices
+  useEffect(() => { loadVoices(); }, []);
+
   const speak = useCallback((text: string, rate = speed) => {
+    if (typeof speechSynthesis === 'undefined') return;
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     u.lang = voiceType;
     u.rate = rate;
+    const voice = pickBestVoice(voiceType);
+    if (voice) u.voice = voice;
     utterRef.current = u;
     u.onstart = () => setIsPlaying(true);
     u.onend = () => { setIsPlaying(false); setCurrentWord(-1); };
@@ -74,6 +81,8 @@ export default function ListeningScreen() {
       const u = new SpeechSynthesisUtterance(lines[i].spanish);
       u.lang = voiceType;
       u.rate = speed;
+      const voice = pickBestVoice(voiceType);
+      if (voice) u.voice = voice;
       u.onboundary = (e) => {
         if (e.name === 'word') { setCurrentWord(w); w++; }
       };
