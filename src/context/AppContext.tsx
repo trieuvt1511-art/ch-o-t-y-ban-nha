@@ -53,15 +53,15 @@ const ACTIVE_KEY = 'holamind_active';
 const FAMILY_KEY = 'holamind_family';
 
 function loadProfiles(): LocalProfile[] {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
+  try { return JSON.parse(safeGetItem(STORAGE_KEY) || '[]'); } catch { return []; }
 }
-function saveProfiles(p: LocalProfile[]) { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); }
+function saveProfiles(p: LocalProfile[]) { safeSetItem(STORAGE_KEY, JSON.stringify(p)); }
 function loadFamily(): FamilyGroup {
   try {
-    return JSON.parse(localStorage.getItem(FAMILY_KEY) || 'null') || defaultFamily();
+    return JSON.parse(safeGetItem(FAMILY_KEY) || 'null') || defaultFamily();
   } catch { return defaultFamily(); }
 }
-function saveFamily(f: FamilyGroup) { localStorage.setItem(FAMILY_KEY, JSON.stringify(f)); }
+function saveFamily(f: FamilyGroup) { safeSetItem(FAMILY_KEY, JSON.stringify(f)); }
 function defaultFamily(): FamilyGroup {
   return {
     name: 'Gia đình',
