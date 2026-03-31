@@ -43,6 +43,7 @@ const App = () => (
             <Route path="/listening" element={<ListeningScreen />} />
             <Route path="/ai-chat" element={<AIChatScreen />} />
             <Route path="/settings" element={<SettingsScreen />} />
+            <Route path="/install" element={<InstallScreen />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
