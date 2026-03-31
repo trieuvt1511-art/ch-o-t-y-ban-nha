@@ -144,7 +144,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const createProfile = useCallback((name: string, emoji: string, level: string): LocalProfile => {
     const p: LocalProfile = {
-      id: crypto.randomUUID(),
+      id: createSafeId(),
       name, emoji, level,
       wordsLearned: 0, scenariosCompleted: 0, streak: 1,
       lastActiveDate: new Date().toISOString().split('T')[0],
