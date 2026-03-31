@@ -16,6 +16,9 @@ export interface LocalProfile {
   duelsWon: number;
   voiceNotes: number;
   phraseLog: string[];
+  dailyActivities: number;
+  dailyPhraseUsed: boolean;
+  dailyDuelDone: boolean;
 }
 
 interface FamilyGroup {
