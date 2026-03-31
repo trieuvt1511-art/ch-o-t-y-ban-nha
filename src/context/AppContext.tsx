@@ -80,7 +80,7 @@ const AppContext = createContext<AppContextType | null>(null);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [profiles, setProfiles] = useState<LocalProfile[]>(loadProfiles);
-  const [activeId, setActiveId] = useState<string | null>(() => localStorage.getItem(ACTIVE_KEY));
+  const [activeId, setActiveId] = useState<string | null>(() => safeGetItem(ACTIVE_KEY));
   const [family, setFamily] = useState<FamilyGroup>(loadFamily);
 
   const activeProfile = profiles.find(p => p.id === activeId) || null;
