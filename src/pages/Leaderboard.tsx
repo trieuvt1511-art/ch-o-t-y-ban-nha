@@ -580,6 +580,4 @@ export default function Leaderboard() {
     </div>
   );
 
-  function getProfileName(id: string) { return profiles.find(p => p.id === id)?.name || '?'; }
-  function getProfileEmoji(id: string) { return profiles.find(p => p.id === id)?.emoji || '😊'; }
 }

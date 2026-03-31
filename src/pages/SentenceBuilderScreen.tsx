@@ -33,7 +33,7 @@ export default function SentenceBuilderScreen() {
   const [score, setScore] = useState(0);
   const [showTip, setShowTip] = useState(false);
 
-  if (!user) { navigate('/auth'); return null; }
+  if (!activeProfile) { navigate('/'); return null; }
 
   const level = selectedLevel !== null ? SENTENCE_LEVELS[selectedLevel] : null;
   const exercise = level ? level.exercises[exerciseIndex] : null;
