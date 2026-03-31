@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { safeGetItem, safeSetItem, safeRemoveItem, createSafeId } from '@/lib/browser-safe';
 
 export interface LocalProfile {
   id: string;
