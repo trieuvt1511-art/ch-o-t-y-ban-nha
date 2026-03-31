@@ -341,6 +341,9 @@ export default function FlashcardScreen() {
         )}
       </div>
       <BottomNav />
+      {showAIHelper && currentWord && (
+        <FlashcardAIHelper word={currentWord.spanish} meaning={currentWord.vietnamese} onClose={() => setShowAIHelper(false)} />
+      )}
     </div>
   );
 }
