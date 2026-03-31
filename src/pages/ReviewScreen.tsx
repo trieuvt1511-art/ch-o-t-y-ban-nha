@@ -7,7 +7,8 @@ import { ArrowLeft, RotateCcw, Volume2 } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 
 export default function ReviewScreen() {
-  const { user, learnedWords } = useApp();
+  const { activeProfile } = useApp();
+  const learnedWords = activeProfile?.learnedWords || [];
   const navigate = useNavigate();
 
   const allVocab = useMemo(() => {
