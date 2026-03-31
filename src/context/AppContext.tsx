@@ -150,6 +150,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       weeklyXP: 0, totalXP: 0,
       learnedWords: [], reviewCards: {},
       duelsWon: 0, voiceNotes: 0, phraseLog: [],
+      dailyActivities: 0, dailyPhraseUsed: false, dailyDuelDone: false,
     };
     setProfiles(prev => [...prev, p]);
     setActiveId(p.id);
