@@ -28,9 +28,7 @@ function drawWaveform(
     const x = 10 + i * (barW + gap);
     const y = (h - 24 - barH) / 2 + 12;
     ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.roundRect(x, y, barW, barH, 1);
-    ctx.fill();
+    ctx.fillRect(x, y, barW, barH);
   });
 
   // Label
