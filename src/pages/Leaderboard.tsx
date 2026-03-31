@@ -121,7 +121,28 @@ export default function Leaderboard() {
     });
     updateProfile({ voiceNotes: activeProfile.voiceNotes + 1 });
     setVoiceText('');
+    setRecordingUrl(null);
   };
+
+  const toggleRecording = useCallback(() => {
+    if (isRecording) {
+      recorderRef.current?.stop();
+      setIsRecording(false);
+      return;
+    }
+    const recorder = createRecorder(
+      (result: RecordingResult) => {
+        setRecordingUrl(result.url);
+        setIsRecording(false);
+        toast({ title: `🎤 Đã ghi ${result.duration.toFixed(1)}s` });
+      },
+      (msg: string) => { toast({ title: msg, variant: 'destructive' }); setIsRecording(false); },
+      15000,
+    );
+    recorderRef.current = recorder;
+    recorder.start();
+    setIsRecording(true);
+  }, [isRecording]);
 
   // Story
   const addSentence = () => {
