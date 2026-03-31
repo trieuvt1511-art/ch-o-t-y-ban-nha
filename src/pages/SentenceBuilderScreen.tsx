@@ -134,6 +134,9 @@ export default function SentenceBuilderScreen() {
                 ))}
               </div>
             </div>
+
+            {/* AI Sentence Checker */}
+            <SentenceChecker />
           </div>
         )}
 
