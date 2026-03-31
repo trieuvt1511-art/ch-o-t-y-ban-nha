@@ -18,6 +18,7 @@ import SentenceBuilderScreen from "./pages/SentenceBuilderScreen";
 import AuthScreen from "./pages/AuthScreen";
 import SettingsScreen from "./pages/SettingsScreen";
 import OnboardingScreen from "./pages/OnboardingScreen";
+import InstallScreen from "./pages/InstallScreen";
 
 const queryClient = new QueryClient();
 
