@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
 import { getLevel, getUnlockedBadges, ACHIEVEMENTS } from '@/lib/xp-system';
-import { Flame, BookOpen, Brain, Headphones, Swords, Users, Volume2, Check, LogOut, ArrowRight } from 'lucide-react';
+import { Flame, BookOpen, Brain, Headphones, Swords, Users, Volume2, Check, LogOut, ArrowRight, Settings } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 
 const DAILY_PHRASES = [
@@ -83,6 +83,9 @@ export default function Dashboard() {
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm font-bold">{lvl.badge}</span>
+            <button onClick={() => navigate('/settings')} className="btn-icon bg-muted text-muted-foreground w-10 h-10 min-h-0">
+              <Settings size={16} />
+            </button>
             <button onClick={handleLogout} className="btn-icon bg-muted text-muted-foreground w-10 h-10 min-h-0">
               <LogOut size={16} />
             </button>

@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 import FlashcardScreen from "./pages/FlashcardScreen";
 import SentenceBuilderScreen from "./pages/SentenceBuilderScreen";
 import AuthScreen from "./pages/AuthScreen";
+import SettingsScreen from "./pages/SettingsScreen";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/listening" element={<ListeningScreen />} />
             <Route path="/ai-chat" element={<AIChatScreen />} />
+            <Route path="/settings" element={<SettingsScreen />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
