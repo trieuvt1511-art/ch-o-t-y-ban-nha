@@ -1,4 +1,5 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
+import { pickBestVoice, loadVoices } from '@/lib/speech';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Play, Pause, Volume2, MessageCircle, Music, Ear, Radio, Mic, BookOpen, ChevronDown } from 'lucide-react';
 import { SHORT_DIALOGUES, PRONUNCIATION_DRILLS, SHADOW_EXERCISES, SONGS, PODCAST_EPISODES } from '@/lib/listening-exercises';
