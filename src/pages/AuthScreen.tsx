@@ -58,9 +58,9 @@ export default function AuthScreen() {
       <div className="w-full max-w-[430px] page-enter">
         {/* Hero */}
         <div className="text-center mb-6">
-          <img src={heroFamily} alt="HolaMind" className="w-36 h-auto mx-auto mb-3 animate-float" width={800} height={600} />
+          <img src={heroFamily} alt="HolaBoBo" className="w-36 h-auto mx-auto mb-3 animate-float" width={800} height={600} />
           <h1 className="text-3xl font-heading font-bold text-foreground">
-            Hola<span className="text-primary">Mind</span> 🇪🇸
+            Hola<span className="text-primary">BoBo</span> 🇪🇸
           </h1>
           <p className="text-sm text-muted-foreground mt-1">Học tiếng Tây Ban Nha cùng gia đình</p>
         </div>
