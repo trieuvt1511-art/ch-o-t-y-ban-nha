@@ -486,13 +486,30 @@ export default function Leaderboard() {
           <div className="animate-fade-in space-y-3">
             <div className="rounded-2xl bg-card shadow-card p-4">
               <p className="text-xs font-bold text-muted-foreground uppercase mb-2">🎤 Nói câu tiếng TBN</p>
-              <div className="flex gap-2">
+              <div className="flex gap-2 mb-2">
                 <input value={voiceText} onChange={e => setVoiceText(e.target.value)} placeholder="Viết câu tiếng TBN..."
                   className="flex-1 rounded-xl bg-muted px-3 py-2.5 text-sm font-medium text-foreground placeholder:text-muted-foreground" />
                 <button onClick={postVoice} disabled={!voiceText.trim()} className="btn-icon gradient-primary text-primary-foreground w-10 h-10 min-h-0 shadow-card disabled:opacity-30">
                   <Send size={16} />
                 </button>
               </div>
+              {isRecordingSupported() && (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={toggleRecording}
+                    className={`min-h-[40px] rounded-full px-4 flex items-center gap-2 text-sm font-bold transition-all ${
+                      isRecording
+                        ? 'bg-destructive text-destructive-foreground animate-pulse'
+                        : 'bg-muted text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    {isRecording ? <><Square size={14} /> Dừng</> : <><Mic size={14} /> Ghi âm (15s)</>}
+                  </button>
+                  {recordingUrl && (
+                    <audio src={recordingUrl} controls className="h-8 flex-1" />
+                  )}
+                </div>
+              )}
             </div>
             {family.voicePosts.length === 0 ? (
               <div className="text-center py-10 text-muted-foreground">
