@@ -39,6 +39,7 @@ const App = () => (
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/listening" element={<ListeningScreen />} />
             <Route path="/ai-chat" element={<AIChatScreen />} />
+            <Route path="/settings" element={<SettingsScreen />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
