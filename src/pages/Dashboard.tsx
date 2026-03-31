@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
 import { getLevel, getUnlockedBadges, ACHIEVEMENTS } from '@/lib/xp-system';
-import { Flame, BookOpen, Brain, Headphones, Swords, Users, Volume2, Check, LogOut, ArrowRight } from 'lucide-react';
+import { Flame, BookOpen, Brain, Headphones, Swords, Users, Volume2, Check, LogOut, ArrowRight, Settings } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 
 const DAILY_PHRASES = [
