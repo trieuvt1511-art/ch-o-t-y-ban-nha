@@ -44,7 +44,8 @@ type ViewMode = 'categories' | 'review';
 
 export default function FlashcardScreen() {
   const navigate = useNavigate();
-  const { user, learnedWords, addLearnedWord, updateDbProfile, profile } = useApp();
+  const { activeProfile, addLearnedWord, addXP, updateProfile } = useApp();
+  const learnedWords = activeProfile?.learnedWords || [];
   const [view, setView] = useState<ViewMode>('categories');
   const [selectedCat, setSelectedCat] = useState(0);
   const [search, setSearch] = useState('');
