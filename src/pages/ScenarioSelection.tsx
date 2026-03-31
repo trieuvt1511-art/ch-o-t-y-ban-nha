@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SCENARIOS, CATEGORIES } from '@/lib/data';
 import { Category } from '@/lib/types';
-import { ArrowLeft, Star } from 'lucide-react';
+import { ArrowLeft, Star, CheckCircle } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
+import { useApp } from '@/context/AppContext';
 
 const DIFF_COLORS: Record<string, string> = {
   'Dễ': 'bg-success/15 text-success',
@@ -13,9 +14,11 @@ const DIFF_COLORS: Record<string, string> = {
 
 export default function ScenarioSelection() {
   const navigate = useNavigate();
+  const { profile } = useApp();
   const [filter, setFilter] = useState<Category | 'all'>('all');
 
   const filtered = filter === 'all' ? SCENARIOS : SCENARIOS.filter(s => s.category === filter);
+  const completedCount = profile?.scenarios_completed ?? 0;
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center">
@@ -24,7 +27,10 @@ export default function ScenarioSelection() {
           <button onClick={() => navigate('/dashboard')} className="btn-icon bg-muted text-muted-foreground hover:text-foreground hover:bg-accent">
             <ArrowLeft size={20} />
           </button>
-          <h1 className="text-xl font-heading font-bold text-foreground">Chọn chủ đề</h1>
+          <div>
+            <h1 className="text-xl font-heading font-bold text-foreground">Chọn chủ đề</h1>
+            <p className="text-xs text-muted-foreground">{SCENARIOS.filter(s => s.vocabulary.length > 0).length} bài học · 8 chủ đề</p>
+          </div>
         </div>
 
         {/* Category Filter */}
@@ -48,7 +54,7 @@ export default function ScenarioSelection() {
 
         {/* Scenario Grid */}
         <div className="space-y-3">
-          {filtered.map((scenario, i) => {
+          {filtered.map((scenario) => {
             const hasContent = scenario.vocabulary.length > 0;
             return (
               <button
@@ -61,17 +67,22 @@ export default function ScenarioSelection() {
                   <span className="text-2xl">{scenario.categoryEmoji}</span>
                   <div className="flex-1 min-w-0">
                     <p className="font-heading font-bold text-foreground truncate">{scenario.title}</p>
-                    <div className="flex items-center gap-2 mt-1.5">
-                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${DIFF_COLORS[scenario.difficulty]}`}>
+                    <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${DIFF_COLORS[scenario.difficulty]}`}>
                         {scenario.difficulty}
                       </span>
-                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <Star size={12} /> {scenario.xp} XP
+                      <span className="flex items-center gap-1 text-[10px] text-muted-foreground font-bold">
+                        <Star size={10} /> {scenario.xp} XP
+                      </span>
+                      <span className="text-[10px] text-muted-foreground">
+                        {scenario.vocabulary.length} từ
                       </span>
                     </div>
                   </div>
-                  {!hasContent && (
-                    <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full font-bold">Sắp ra mắt</span>
+                  {!hasContent ? (
+                    <span className="text-[10px] text-muted-foreground bg-muted px-2 py-1 rounded-full font-bold">Sắp ra mắt</span>
+                  ) : (
+                    <CheckCircle size={20} className="text-muted/80 shrink-0 mt-1" />
                   )}
                 </div>
               </button>
