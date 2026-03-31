@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { SCENARIOS } from '@/lib/data';
 import { useApp } from '@/context/AppContext';
 import { ArrowLeft, Volume2, Check } from 'lucide-react';
+import { ScenarioAIChat } from '@/components/ScenarioAIChat';
 
 export default function LessonScreen() {
   const { id } = useParams<{ id: string }>();
