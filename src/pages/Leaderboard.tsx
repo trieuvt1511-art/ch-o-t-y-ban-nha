@@ -124,7 +124,7 @@ export default function Leaderboard() {
     setRecordingUrl(null);
   };
 
-  const toggleRecording = useCallback(() => {
+  const toggleRecording = () => {
     if (isRecording) {
       recorderRef.current?.stop();
       setIsRecording(false);
@@ -142,7 +142,7 @@ export default function Leaderboard() {
     recorderRef.current = recorder;
     recorder.start();
     setIsRecording(true);
-  }, [isRecording]);
+  };
 
   // Story
   const addSentence = () => {
