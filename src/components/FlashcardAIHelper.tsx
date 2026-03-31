@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Bot, X } from 'lucide-react';
 import { callAI, AI_PROMPTS } from '@/lib/ai-helpers';
 import { AIResponseCard } from './AIResponseCard';
