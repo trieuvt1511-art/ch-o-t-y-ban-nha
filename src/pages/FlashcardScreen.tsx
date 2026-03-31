@@ -1,8 +1,9 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
-import { ArrowLeft, Search, Volume2, Star, RotateCcw } from 'lucide-react';
+import { ArrowLeft, Search, Volume2, Star, RotateCcw, Bot } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
+import { FlashcardAIHelper } from '@/components/FlashcardAIHelper';
 import { FLASHCARD_CATEGORIES, FlashcardWord } from '@/lib/flashcard-data';
 import { supabase } from '@/integrations/supabase/client';
 
