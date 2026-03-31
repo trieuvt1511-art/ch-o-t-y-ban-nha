@@ -50,11 +50,17 @@ export default function ListeningScreen() {
   const utterRef = useRef<SpeechSynthesisUtterance | null>(null);
   const playingRef = useRef(false);
 
+  // Pre-load voices
+  useEffect(() => { loadVoices(); }, []);
+
   const speak = useCallback((text: string, rate = speed) => {
+    if (typeof speechSynthesis === 'undefined') return;
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     u.lang = voiceType;
     u.rate = rate;
+    const voice = pickBestVoice(voiceType);
+    if (voice) u.voice = voice;
     utterRef.current = u;
     u.onstart = () => setIsPlaying(true);
     u.onend = () => { setIsPlaying(false); setCurrentWord(-1); };
