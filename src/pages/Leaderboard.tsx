@@ -316,18 +316,6 @@ export default function Leaderboard() {
     speechSynthesis.speak(u);
   };
 
-  // Sorted members by XP
-  const sortedMembers = useMemo(() =>
-    [...members].sort((a, b) => (b.profile?.weekly_xp || 0) - (a.profile?.weekly_xp || 0)),
-    [members]
-  );
-  const topMember = sortedMembers[0];
-
-  const getMemberName = (userId: string) => members.find(m => m.user_id === userId)?.profile?.name || '?';
-  const getMemberEmoji = (userId: string) => members.find(m => m.user_id === userId)?.profile?.emoji || '😊';
-
-  const storyData = getStoryStarter();
-
   // ===== NO FAMILY YET =====
   if (!familyId && !loading) {
     return (
