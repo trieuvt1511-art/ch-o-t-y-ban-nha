@@ -131,6 +131,7 @@ export default function LessonScreen() {
           </div>
         )}
       </div>
+      <ScenarioAIChat scenarioId={scenario.id} scenarioTitle={scenario.title} />
     </div>
   );
 }
