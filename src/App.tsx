@@ -18,6 +18,7 @@ import SentenceBuilderScreen from "./pages/SentenceBuilderScreen";
 import AuthScreen from "./pages/AuthScreen";
 import SettingsScreen from "./pages/SettingsScreen";
 import OnboardingScreen from "./pages/OnboardingScreen";
+import InstallScreen from "./pages/InstallScreen";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const App = () => (
             <Route path="/listening" element={<ListeningScreen />} />
             <Route path="/ai-chat" element={<AIChatScreen />} />
             <Route path="/settings" element={<SettingsScreen />} />
+            <Route path="/install" element={<InstallScreen />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
