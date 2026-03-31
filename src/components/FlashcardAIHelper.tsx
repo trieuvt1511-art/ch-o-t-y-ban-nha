@@ -15,17 +15,20 @@ export function FlashcardAIHelper({ word, meaning, onClose }: FlashcardAIHelperP
   const [error, setError] = useState<string | null>(null);
 
   // Auto-fetch on mount
-  useState(() => {
+  useEffect(() => {
+    let cancelled = false;
     (async () => {
       const result = await callAI(
         [{ role: 'user', content: AI_PROMPTS.flashcardHelp(word, meaning) }],
         "You are a friendly Spanish tutor helping Vietnamese learners remember words."
       );
+      if (cancelled) return;
       if (result.error) setError(result.error);
       else setContent(result.reply);
       setIsLoading(false);
     })();
-  });
+    return () => { cancelled = true; };
+  }, [word, meaning]);
 
   const retry = async () => {
     setIsLoading(true);
