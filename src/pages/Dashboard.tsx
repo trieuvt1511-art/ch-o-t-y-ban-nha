@@ -57,6 +57,7 @@ export default function Dashboard() {
     if (phraseUsed) return;
     setPhraseUsed(true);
     addXP(15);
+    updateProfile({ dailyPhraseUsed: true, dailyActivities: (profile.dailyActivities || 0) + 1 });
   };
 
   const handleLogout = () => {
