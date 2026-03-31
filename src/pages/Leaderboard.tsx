@@ -1,8 +1,10 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp, LocalProfile } from '@/context/AppContext';
 import { getLevel, XP } from '@/lib/xp-system';
-import { ArrowLeft, Volume2, Send, Trophy, Copy, Check } from 'lucide-react';
+import { ArrowLeft, Volume2, Send, Trophy, Copy, Check, Mic, MicOff, Square } from 'lucide-react';
+import { speak as ttsSpeak } from '@/lib/speech';
+import { isRecordingSupported, createRecorder, RecordingResult } from '@/lib/speech';
 import BottomNav from '@/components/BottomNav';
 import { toast } from '@/hooks/use-toast';
 import { DAILY_PHRASES, DUEL_QUESTIONS, CHEER_OPTIONS, MEMBER_COLORS, getWeeklyQuest, getTodayPhrase, getStoryStarter } from '@/lib/family-data';
@@ -38,6 +40,9 @@ export default function Leaderboard() {
 
   // Voice
   const [voiceText, setVoiceText] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingUrl, setRecordingUrl] = useState<string | null>(null);
+  const recorderRef = useRef<{ start: () => Promise<void>; stop: () => void } | null>(null);
 
   // Story
   const [newSentence, setNewSentence] = useState('');
@@ -47,19 +52,14 @@ export default function Leaderboard() {
   const quest = getWeeklyQuest();
   const storyData = getStoryStarter();
 
-  if (!activeProfile) { navigate('/'); return null; }
-
-  const otherProfiles = profiles.filter(p => p.id !== activeProfile.id);
+  const otherProfiles = profiles.filter(p => p.id !== activeProfile?.id);
   const sortedProfiles = useMemo(() =>
     [...profiles].sort((a, b) => b.weeklyXP - a.weeklyXP), [profiles]);
   const topProfile = sortedProfiles[0];
 
-  const speak = (text: string) => {
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'es-ES';
-    u.rate = 0.85;
-    speechSynthesis.speak(u);
-  };
+  if (!activeProfile) { navigate('/'); return null; }
+
+  const speak = (text: string) => ttsSpeak(text);
 
   // Duel
   const startDuel = (member: LocalProfile) => {
@@ -121,6 +121,27 @@ export default function Leaderboard() {
     });
     updateProfile({ voiceNotes: activeProfile.voiceNotes + 1 });
     setVoiceText('');
+    setRecordingUrl(null);
+  };
+
+  const toggleRecording = () => {
+    if (isRecording) {
+      recorderRef.current?.stop();
+      setIsRecording(false);
+      return;
+    }
+    const recorder = createRecorder(
+      (result: RecordingResult) => {
+        setRecordingUrl(result.url);
+        setIsRecording(false);
+        toast({ title: `🎤 Đã ghi ${result.duration.toFixed(1)}s` });
+      },
+      (msg: string) => { toast({ title: msg, variant: 'destructive' }); setIsRecording(false); },
+      15000,
+    );
+    recorderRef.current = recorder;
+    recorder.start();
+    setIsRecording(true);
   };
 
   // Story
@@ -465,13 +486,30 @@ export default function Leaderboard() {
           <div className="animate-fade-in space-y-3">
             <div className="rounded-2xl bg-card shadow-card p-4">
               <p className="text-xs font-bold text-muted-foreground uppercase mb-2">🎤 Nói câu tiếng TBN</p>
-              <div className="flex gap-2">
+              <div className="flex gap-2 mb-2">
                 <input value={voiceText} onChange={e => setVoiceText(e.target.value)} placeholder="Viết câu tiếng TBN..."
                   className="flex-1 rounded-xl bg-muted px-3 py-2.5 text-sm font-medium text-foreground placeholder:text-muted-foreground" />
                 <button onClick={postVoice} disabled={!voiceText.trim()} className="btn-icon gradient-primary text-primary-foreground w-10 h-10 min-h-0 shadow-card disabled:opacity-30">
                   <Send size={16} />
                 </button>
               </div>
+              {isRecordingSupported() && (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={toggleRecording}
+                    className={`min-h-[40px] rounded-full px-4 flex items-center gap-2 text-sm font-bold transition-all ${
+                      isRecording
+                        ? 'bg-destructive text-destructive-foreground animate-pulse'
+                        : 'bg-muted text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    {isRecording ? <><Square size={14} /> Dừng</> : <><Mic size={14} /> Ghi âm (15s)</>}
+                  </button>
+                  {recordingUrl && (
+                    <audio src={recordingUrl} controls className="h-8 flex-1" />
+                  )}
+                </div>
+              )}
             </div>
             {family.voicePosts.length === 0 ? (
               <div className="text-center py-10 text-muted-foreground">
