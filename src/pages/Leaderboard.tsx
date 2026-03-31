@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp, LocalProfile } from '@/context/AppContext';
-import { getLevel, getUnlockedBadges, ACHIEVEMENTS, XP, DUEL_QUESTIONS as _ } from '@/lib/xp-system';
+import { getLevel, XP } from '@/lib/xp-system';
 import { ArrowLeft, Volume2, Send, Trophy, Copy, Check } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import { toast } from '@/hooks/use-toast';

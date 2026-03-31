@@ -27,7 +27,7 @@ export default function ReviewScreen() {
   const [flipped, setFlipped] = useState(false);
   const [completed, setCompleted] = useState(false);
 
-  if (!user) { navigate('/auth'); return null; }
+  if (!activeProfile) { navigate('/'); return null; }
 
   const currentWord = reviewWords[currentIndex];
 

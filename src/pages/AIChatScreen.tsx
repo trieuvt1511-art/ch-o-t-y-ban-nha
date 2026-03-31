@@ -16,7 +16,7 @@ const SCENARIOS_PROMPTS = [
 
 export default function AIChatScreen() {
   const navigate = useNavigate();
-  const { user } = useApp();
+  const { activeProfile } = useApp();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);

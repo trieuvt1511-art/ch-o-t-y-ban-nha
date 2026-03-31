@@ -98,8 +98,8 @@ export default function FlashcardScreen() {
     speechSynthesis.speak(u);
   };
 
-  const handleRate = async (quality: number) => {
-    if (!currentWord || !user) return;
+  const handleRate = (quality: number) => {
+    if (!currentWord || !activeProfile) return;
     
     const existing = reviewCards[currentWord.id];
     const card: ReviewCardDB = existing || {
@@ -115,16 +115,9 @@ export default function FlashcardScreen() {
     // Animate swipe
     setSwipeAnim(quality >= 3 ? 'right' : 'left');
     
-    // Save to DB
-    await supabase.from('review_cards').upsert({
-      user_id: user.id,
-      word_id: updated.word_id,
-      ease_factor: updated.ease_factor,
-      interval: updated.interval,
-      repetitions: updated.repetitions,
-      next_review: updated.next_review,
-      scenario_id: '',
-    }, { onConflict: 'user_id,word_id' });
+    // Save to localStorage
+    const newCards = { ...activeProfile.reviewCards, [currentWord.id]: updated };
+    updateProfile({ reviewCards: newCards });
     
     // Mark learned if quality >= 3
     if (quality >= 3 && !learnedWords.includes(currentWord.id)) {
@@ -132,7 +125,7 @@ export default function FlashcardScreen() {
     }
 
     // Update XP
-    updateDbProfile({ weekly_xp: (profile?.weekly_xp ?? 0) + 10 });
+    addXP(XP.FLASHCARD_CORRECT);
     
     setReviewCards(prev => ({ ...prev, [currentWord.id]: updated }));
     
